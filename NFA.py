@@ -67,8 +67,7 @@ class NFA:
         self.afn.final_states = self.afn.set_super_final_state(
             self.afn.final_states[-1])
         # bubble sort algorithm to sort values in ascending order
-        startNumber = 0
-        finalNumber = 0
+
         for stateCompare in self.afn.states:
             for statesActual in self.afn.states:
                 if stateCompare.name == statesActual.name:
@@ -82,11 +81,13 @@ class NFA:
                     if transition.state.name == stateCompare.name:
                         if transition.state != stateCompare:
                             transition.state = stateCompare
-
+        startNumber = self.afn.states[0].name
+        finalNumber = self.afn.states[0].name
         for i in range(len(self.afn.states)):
             for j in range(len(self.afn.states)):
                 if self.afn.states[i].name < self.afn.states[j].name:
-                    startNumber = self.afn.states[i].name
+                    if self.afn.states[i].name < startNumber:
+                        startNumber = self.afn.states[i].name
 
         for i in range(len(self.afn.states)):
             if self.afn.states[i].name == startNumber:
@@ -96,7 +97,8 @@ class NFA:
         for i in range(len(self.afn.states)):
             for j in range(len(self.afn.states)):
                 if self.afn.states[i].name > self.afn.states[j].name:
-                    finalNumber = self.afn.states[i].name
+                    if self.afn.states[i].name > finalNumber:
+                        finalNumber = self.afn.states[i].name
 
         for i in range(len(self.afn.states)):
             if self.afn.states[i].name == finalNumber:
@@ -113,7 +115,6 @@ class NFA:
 
     def tree_to_afn(self, node):
         if node.leftLeaf is None and node.rightLeaf is None:
-            print('node')
             temp = AFN()
             nodeObj = NODE(self.state_counter, 0)
             temp.start_state = nodeObj
@@ -129,7 +130,6 @@ class NFA:
             return temp
 
         elif node.name == '*':  # listo
-            print('*')
             temp = AFN()
 
             nodeObj = NODE(self.state_counter, 0)
@@ -154,7 +154,6 @@ class NFA:
             return temp
 
         elif node.name == '.':  # listo
-            print('.')
             temp = AFN()
 
             nodeObj = NODE(self.state_counter, 0)
@@ -174,7 +173,6 @@ class NFA:
             return temp
 
         elif node.name == '|':  # listo
-            print('|')
             temp = AFN()
 
             nodeObj = NODE(self.state_counter, 0)
@@ -204,7 +202,6 @@ class NFA:
             return temp
 
         elif node.name == '?':  # listo
-            print('?')
             temp = AFN()
 
             nodeObj = NODE(self.state_counter, 0)
@@ -240,7 +237,6 @@ class NFA:
             return temp
 
         elif node.name == '+':  # listo
-            print('+')
             temp = AFN()
 
             nodeObj = NODE(self.state_counter, 0)

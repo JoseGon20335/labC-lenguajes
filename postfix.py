@@ -23,7 +23,6 @@ def passToPostFix(redex):
         else:
             fixRedex += c
 
-    print('fix redex: a.(a?.b*|c+).b|b.a.a : ', fixRedex)
     for i, c in enumerate(fixRedex):
         if c in alfabetoA:
             resultPostFix += c

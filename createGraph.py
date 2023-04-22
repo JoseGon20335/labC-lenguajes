@@ -11,11 +11,9 @@ class createGraph(object):
         tree = Digraph('Tree', 'resultado')
         tree.graph_attr['rankdir'] = 'TB'
         tree = this.addLeaftToTree(tree, this.data)
-        print("tree", tree)
         tree.view()
 
     def addLeaftToTree(this, tree, data):
-        print("data", data)
         if data is None:
             return tree
         tree.node(str(id(data)), str(data.name), shape='circle')

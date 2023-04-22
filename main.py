@@ -14,7 +14,19 @@ precedence = {'(': 1, "(": 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 
 def main():
-    expresion = '(a*|b*)c'
+    pasar = True
+    expresion = ''
+    while pasar:
+        print('Ingrese la expresion regular:')
+        expresion = input()
+        if expresion == '':
+            print('Expresion regular vacia.')
+        elif expresion == ' ':
+            print('Expresion regular vacia.')
+        else:
+            pasar = False
+
+    # expresion = '(a*|b*)c'
     # expresion = '0?(1?)?0*'
     # expresion = 'a(a?b*|c+)b|baa'
     # expresion = '(a*|b*)c'
@@ -27,21 +39,19 @@ def main():
     # expresion = '(a?)'
 
     # PRIMERO SE PASA A POSTFIX
+    print('___________________________')
     print('expresion: ', expresion)
     postFix = postfix.passToPostFix(expresion)
     print('postfix: ', postFix)
+    print('___________________________')
 
     # VAMOS A PASAR EL POSTFIX A UN ARBOL
     tree = Tree(postFix=postFix)
     tree.postFixToTree()
-    print(tree)
 
     # VAMOS A PASAR EL ARBOL A UN NFA
     nfa = NFA(tree=tree.tree)
     nfa.convert()
-    print(nfa)
-
-    # Convert the regular expression tree to AFN
 
 
 main()

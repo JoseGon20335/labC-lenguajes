@@ -18,29 +18,24 @@ class Tree(object):
         tree = []
 
         for c in this.postFix:
-            print("c", c)
             if c == '*':
-                print("entro *", c)
                 temp = Node(c, None, None)
                 temp.leftLeaf = tree.pop()
                 tree.append(temp)
 
             elif c == '.':
-                print("entro .", c)
                 temp = Node(c, None, None)
                 temp.rightLeaf = tree.pop()
                 temp.leftLeaf = tree.pop()
                 tree.append(temp)
 
             elif c == '|':
-                print("entro |", c)
                 temp = Node(c, None, None)
                 temp.rightLeaf = tree.pop()
                 temp.leftLeaf = tree.pop()
                 tree.append(temp)
 
             elif c == '?':
-                print("entro ?", c)
                 temp = Node(c, None, None)
                 episilum = Node('ε', None, None)
                 temp.leftLeaf = tree.pop()
@@ -48,7 +43,6 @@ class Tree(object):
                 tree.append(temp)
 
             elif c == '+':
-                print("entro +", c)
                 temp = Node(c, None, None)
                 temp.leftLeaf = tree[-1]
                 kleene = Node('*', None, None)
@@ -57,7 +51,6 @@ class Tree(object):
                 tree.append(temp)
 
             else:
-                print("entro else", c)
                 temp = Node(c, None, None)
                 tree.append(temp)
         this.tree = tree.pop()
@@ -65,6 +58,5 @@ class Tree(object):
         return this.tree
 
     def dataToGraph(this):
-        print("data", this.tree)
         graficador = createGraph(data=this.tree)
         graficador.createTree()
