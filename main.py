@@ -39,6 +39,7 @@ def main():
     # VAMOS A PASAR EL ARBOL A UN NFA
     nfa = NFA(tree=tree.tree)
     nfa.convert()
+    print(nfa)
 
     # Convert the regular expression tree to AFN
 
