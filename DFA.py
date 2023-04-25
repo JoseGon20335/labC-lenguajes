@@ -12,6 +12,7 @@ class NODE:
         self.name = name
         self.symbol = symbol
         self.related = []
+        self.transition_to = []
 
     def add_transition(self, transition_to, transition_name):
         transitionTemp = transition(transition_to, transition_name)
@@ -96,11 +97,10 @@ class DFA:
             self.expectStates.remove(state)
 
             for symbol in temp.alphabet:
-
                 tempEpisolon = []
                 statesSymbol = self.symbol(state.related, symbol)
                 addStates = []
-                # aqui estoy
+
                 for stateSymbol in statesSymbol:
                     statesEpisolon = self.episolon(stateSymbol)
                     for stateEpisolon in statesEpisolon:
@@ -108,30 +108,54 @@ class DFA:
 
                 addStates = list(set(addStates))
 
-                for stateEpisolon in state.related:
-                    tempEpisolon.append(stateEpisolon)
+                if self.dontRepeat(addStates, temp) == True:
 
-                for stateEpisolon in state.related:
-                    for transition in stateEpisolon.transition_to:
-                        if transition.symbol == symbol:
-                            tempEpisolon.append(transition.state)
-
-                if len(tempEpisolon) != 0:
-                    tempEpisolon = self.episolon(tempEpisolon)
-                    nameNode = str(self.alfabeto[self.state_counter])
-                    nodo = NODE(nameNode, 1, tempEpisolon)
-
-                    if(nodo.symbol == 2):
-                        temp.set_final_state(nodo)
-                        nodo.symbol = 3
+                    for stateAdd in addStates:
+                        if stateAdd.symbol == 2:
+                            nodo = NODE(
+                                self.alfabeto[self.state_counter], 2, addStates)
+                            temp.set_final_state(nodo)
+                            break
+                        else:
+                            nodo = NODE(
+                                self.alfabeto[self.state_counter], 1, addStates)
+                            break
 
                     temp.add_state(nodo)
-                    state.add_transition(nodo, symbol)
                     self.state_counter += 1
-                    self.expectStates.append(nodo)
+
+                    self.expectStates.append(nodo.related)
+
+                    tempRepeat = self.dontRepeat(state, temp)
+                    check = True
+                    for stateTemp in temp.states:
+                        if stateTemp.name == tempRepeat.name:
+                            for stateTempTransition in stateTemp.transition_to:
+                                if stateTempTransition.symbol == symbol and stateTempTransition.state.name == nodo.name:
+                                    check = False
+
+                    if check:
+                        for stateTemp in temp.states:
+                            if stateTemp.name == tempRepeat.name:
+                                stateTemp.add_transition(nodo, symbol)
+
+                else:
+                    tempRepeat = self.dontRepeat(state, temp)
+                    tempRepeat2 = self.dontRepeat(addStates, temp)
+                    check = True
+                    for stateTemp in temp.states:
+                        if stateTemp.name == tempRepeat.name:
+                            for stateTempTransition in stateTemp.transition_to:
+                                if stateTempTransition.symbol == symbol and stateTempTransition.state.name == tempRepeat2.name:
+                                    check = False
+
+                    if check:
+                        for stateTemp in temp.states:
+                            if stateTemp.name == tempRepeat.name:
+                                stateTemp.add_transition(tempRepeat2, symbol)
 
     def print_result(self):
-        print('____________AFN____________')
+        print('____________AFD____________')
         print('Estados: ')
         for state in self.afn.states:
             print(state.name)
@@ -170,3 +194,17 @@ class DFA:
                     symbolList.append(transition.state)
 
         return symbolList
+
+    def checkTransition
+
+    def dontRepeat(self, states, afdActual):
+        temp = []
+        for node in afdActual.states:
+            for related in node.related:
+                if related not in states:
+                    temp.append(related)
+
+            if len(temp) == 0:
+                return node
+
+        return True
