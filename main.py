@@ -57,7 +57,7 @@ def main():
     nfa.convert()
 
     # VAMOS A PASAR EL NFA A UN AFD
-    dfa = DFA(nfa=nfa.afn, alfabeto=alfabetoC)
+    dfa = DFA(afn=nfa.afn, alfabeto=alfabetoC)
     dfa.convert()
 
 

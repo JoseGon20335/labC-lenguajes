@@ -8,10 +8,10 @@ class transition:
 
 
 class NODE:
-    def __init__(self, name, symbol):
+    def __init__(self, name, symbol, related):
         self.name = name
         self.symbol = symbol
-        self.related = []
+        self.related = related
         self.transition_to = []
 
     def add_transition(self, transition_to, transition_name):
@@ -60,7 +60,6 @@ class AFD:
 class DFA:
     def __init__(self, afn, alfabeto):
         self.afn = afn
-        self.afd = AFD()
         self.alfabeto = alfabeto
         self.state_counter = 0
         self.expectStates = []
@@ -77,8 +76,9 @@ class DFA:
         temp = AFD()
         temp.alphabet = afnInput.alphabet
         temp.alphabet.remove('ε')
-
         tempEpisolon = self.episolon(afnInput.start_state)
+        tempEpisolon.append(afnInput.start_state)
+        tempEpisolon = list(set(tempEpisolon))
         nameNode = str(self.alfabeto[self.state_counter])
         nodo = NODE(nameNode, 1, tempEpisolon)
 
@@ -90,19 +90,20 @@ class DFA:
         self.state_counter += 1
         temp.start_state = nodo
 
-        self.expectStates.append(nodo)
+        self.expectStates.append(tempEpisolon)
 
         while len(self.expectStates) != 0:
-            state = self.expectStates[0]
-            self.expectStates.remove(state)
+            state = self.expectStates.pop()
 
             for symbol in temp.alphabet:
                 tempEpisolon = []
-                statesSymbol = self.symbol(state.related, symbol)
+                statesSymbol = self.symbolGet(state.related, symbol)
                 addStates = []
 
                 for stateSymbol in statesSymbol:
                     statesEpisolon = self.episolon(stateSymbol)
+                    statesEpisolon.append(stateSymbol)
+                    statesEpisolon = list(set(statesEpisolon))
                     for stateEpisolon in statesEpisolon:
                         addStates.append(stateEpisolon)
 
@@ -125,7 +126,7 @@ class DFA:
                     self.state_counter += 1
 
                     self.expectStates.append(nodo.related)
-
+                    # error
                     tempRepeat = self.dontRepeat(state, temp)
                     check = True
                     for stateTemp in temp.states:
@@ -154,6 +155,8 @@ class DFA:
                             if stateTemp.name == tempRepeat.name:
                                 stateTemp.add_transition(tempRepeat2, symbol)
 
+        return temp
+
     def print_result(self):
         print('____________AFD____________')
         print('Estados: ')
@@ -172,21 +175,19 @@ class DFA:
 
     def episolon(self, state):
         closure = []
-        closure.append(state)
 
         for transition in state.transition_to:
             if transition.symbol == 'ε':
                 closure.append(transition.state)
-                temp = []
                 temp = self.episolon(transition.state)
-                for state in temp:
-                    closure.append(state)
+                for stateTemp in temp:
+                    closure.append(stateTemp)
 
         return closure
 
-    def symbol(self, states, symbol):
+    def symbolGet(self, states, symbol):
         symbolList = []
-        symbolList.append(state)
+        # symbolList.append(state)
 
         for state in states:
             for transition in state.transition_to:
@@ -194,8 +195,6 @@ class DFA:
                     symbolList.append(transition.state)
 
         return symbolList
-
-    def checkTransition
 
     def dontRepeat(self, states, afdActual):
         temp = []
