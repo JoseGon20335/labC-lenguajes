@@ -164,6 +164,70 @@ class DFA:
 
         return temp
 
+    # def minimizedAfd(self, afd):
+    #     # Initialize partitions
+    #     partitions = [set(afd.final_states), set(
+    #         afd.states) - set(afd.final_states)]
+
+    #     # Initialize state mapping
+    #     state_mapping = {
+    #         state: 0 if state in partitions[0] else 1 for state in afd.states}
+
+    #     # Initialize worklist
+    #     worklist = [(0, 1)]
+
+    #     # Hopcroft's algorithm
+    #     while worklist:
+    #         # Get a pair (P, X) from the worklist
+    #         P, X = worklist.pop()
+
+    #         # Split the partitions
+    #         for c in afd.alphabet:
+    #             P1 = set()
+    #             for state in P:
+    #                 if afd.transitions.get((state, c), None) is not None:
+    #                     P1.add(afd.transitions[(state, c)])
+    #             for i, Q in enumerate(partitions):
+    #                 if len(Q.intersection(P1)) > 0 and len(Q.difference(P1)) > 0:
+    #                     partitions.remove(Q)
+    #                     partitions.append(Q.intersection(P1))
+    #                     partitions.append(Q.difference(P1))
+    #                     for state in Q.intersection(P1):
+    #                         state_mapping[state] = len(partitions) - 2
+    #                         if state in Q.difference(P1):
+    #                             state_mapping[state] = len(partitions) - 1
+    #                     for state in Q.difference(P1):
+    #                         state_mapping[state] = len(partitions) - 1
+    #                     if (i, X) in worklist:
+    #                         worklist.remove((i, X))
+    #                         worklist.append((len(partitions) - 2, X))
+    #                         worklist.append((len(partitions) - 1, X))
+    #                     else:
+    #                         if len(partitions) - 2 < X:
+    #                             worklist.append((len(partitions) - 2, X))
+    #                         else:
+    #                             worklist.append((X, len(partitions) - 2))
+    #                         if len(partitions) - 1 < X:
+    #                             worklist.append((len(partitions) - 1, X))
+    #                         else:
+    #                             worklist.append((X, len(partitions) - 1))
+
+    #     # Create the minimized AFD
+    #     minimized_afd = AFD()
+    #     minimized_afd.alphabet = afd.alphabet
+    #     minimized_afd.initial_state = state_mapping[afd.initial_state]
+    #     minimized_afd.final_states = {
+    #         state_mapping[state] for state in afd.final_states}
+    #     minimized_afd.states = set(range(len(partitions)))
+    #     minimized_afd.transitions = {}
+    #     for state in afd.states:
+    #         for c in afd.alphabet:
+    #             if afd.transitions.get((state, c), None) is not None:
+    #                 minimized_afd.transitions[(
+    #                     state_mapping[state], c)] = state_mapping[afd.transitions[(state, c)]]
+
+    #     return minimized_afd
+
     def print_result(self):
         print('____________AFD____________')
         print('Estados: ')
