@@ -1,0 +1,17 @@
+// resultado
+digraph "results/Tree" {
+	graph [rankdir=TB]
+	3059231426352 [label="." shape=circle]
+	3059231426160 [label="|" shape=circle]
+	3059231425872 [label="*" shape=circle]
+	3059231425104 [label=a shape=circle]
+	3059231425872 -> 3059231425104
+	3059231426160 -> 3059231425872
+	3059231426064 [label="*" shape=circle]
+	3059231425968 [label=b shape=circle]
+	3059231426064 -> 3059231425968
+	3059231426160 -> 3059231426064
+	3059231426352 -> 3059231426160
+	3059231426256 [label=c shape=circle]
+	3059231426352 -> 3059231426256
+}

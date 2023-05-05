@@ -8,7 +8,7 @@ class createGraphAfn(object):
         this.data = data
 
     def createGraph(this):
-        afnGraph = Digraph('AFN', 'resultado')
+        afnGraph = Digraph('results/AFN', 'resultado')
         afnGraph.graph_attr['rankdir'] = 'LR'
         afnGraph = this.addNodeToGraph(afnGraph, this.data)
         afnGraph.view()

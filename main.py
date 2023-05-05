@@ -1,5 +1,5 @@
 
-from createGraph import *
+from graph.createGraph import *
 from NFA import *
 import postfix
 from Tree import *

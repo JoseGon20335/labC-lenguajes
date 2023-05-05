@@ -1,4 +1,4 @@
-from createGraph import *
+from graph.createGraph import *
 
 
 class Node:

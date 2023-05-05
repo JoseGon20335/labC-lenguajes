@@ -1,4 +1,4 @@
-from createGraphAfn import *
+from graph.createGraphAfn import *
 
 
 class transition:

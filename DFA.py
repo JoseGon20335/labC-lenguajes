@@ -1,4 +1,4 @@
-from createGraphAfd import *
+from graph.createGraphAfd import *
 
 
 class transition:

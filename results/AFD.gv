@@ -1,0 +1,15 @@
+// resultado
+digraph "results/AFD" {
+	graph [rankdir=LR]
+	3059231433408 [label=A shape=circle]
+	3059231431728 [label=B shape=circle]
+	3059231433552 [label=C shape=circle]
+	3059231433648 [label=D shape=doublecircle]
+	3059231433408 -> 3059231431728 [label=a]
+	3059231433408 -> 3059231433552 [label=b]
+	3059231433408 -> 3059231433648 [label=c]
+	3059231431728 -> 3059231431728 [label=a]
+	3059231431728 -> 3059231433648 [label=c]
+	3059231433552 -> 3059231433552 [label=b]
+	3059231433552 -> 3059231433648 [label=c]
+}
