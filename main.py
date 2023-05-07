@@ -4,6 +4,7 @@ from NFA import *
 import postfix
 from Tree import *
 from DFA import *
+from yalReader import *
 
 
 alfabetoA = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
@@ -16,7 +17,7 @@ operadores = ['|', '*', '+', '?', '(', ')', '.']
 precedence = {'(': 1, '(': 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 
-def main():
+def mainAyB():
     pasar = True
     expresion = ''
     # while pasar:
@@ -61,4 +62,13 @@ def main():
     dfa.convert()
 
 
-main()
+def mainC():
+
+    yalFile = 'yal/yalexE.yal'
+
+    yalRead = yalReader(yalFile)
+    yalRead.startReader()
+
+
+# mainAyB()
+mainC()
