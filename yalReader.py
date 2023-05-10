@@ -7,7 +7,8 @@ class yalReader:
     def startReader(self):
         self.readTokens()
         print('hola')
-        self.asciFicacion()
+        self.readGoodTokens()
+        print(self.tokens)
 
     def readTokens(self):
         # Open the file for reading
@@ -34,20 +35,59 @@ class yalReader:
                         temp = temp[:-1:]
                         self.tokens[words[position + 1]] = temp
 
-    def asciFicacion(self):  # pense que sonaria como zombificacion pero quedo medio raro XD
+    def readGoodTokens(self):
+        for value in self.tokens:
+            temp = self.tokens[value]
+            if temp[0] == '[':
+                self.asciFicacion(temp, value)
+                continue
+            else:
+                self.tokens[value] = self.tokenToData(temp)
+                continue
 
-        for value1 in self.tokens:
-            for value2 in self.tokens:
-                if value1 != value2:
-                    temp = self.tokens[value2]
-                    result = ''
-                    de = ''
-                    a = ''
-                    if temp[0] == '[':
-                        flag = 0
-                        for possition, letter in enumerate(temp):
-                            ascii_code = ord(letter)
-                            result = result + ascii_code + '|'
-                            # basicamente quiero analizar como separar las comas cuando se refiere de
-                            # ['A'-'Z']
-                            # porque pueden existir casos donde adentro haya '-'y lo tengo que analizar aparte
+    # pense que sonaria como zombificacion pero quedo medio raro XD
+    def asciFicacion(self, temp, key):
+        result = []
+        flag = 0
+        for possition, letter in enumerate(temp):
+            if flag == 2:
+                if letter == '-':
+                    flag += 1
+                else:
+                    flag = 1
+            elif letter == "'" or letter == '"':
+                flag += 1
+            elif flag == 1:
+                result.append(ord(letter))
+            elif flag == 4:
+                flag = -1
+                de = result.pop()
+                a = ord(letter)
+                for i in range(de, a + 1):
+                    result.append(i)
+        respuesta = ''
+        for i in result:
+            respuesta = respuesta + str(i) + '|'
+        self.tokens[key] = respuesta
+
+    def tokenToData(self, temp):
+        word = ''
+        word2 = ''
+        for position, value in enumerate(temp):
+            word = word + value
+            if(value == "(" or value == ')' or value == '|' or value == '*' or value == '+' or value == '?' or value == '.'):
+                word = ''
+                word2 = word2 + value
+            if word in self.tokens:
+                key = word
+                word = ''
+                for position2, value2 in enumerate(temp):
+                    if position < position2:
+                        temp2 = self.tokenToData(temp[position2:])
+                        word2 = self.tokens[key]
+                        word2 = word2 + temp2
+                        return word2
+
+        return word2
+
+# leer por aparte

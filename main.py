@@ -30,7 +30,7 @@ def mainAyB():
     #     else:
     #         pasar = False
 
-    expresion = '(a*|b*)c'
+    # expresion = '(a*|b*)c'
     # expresion = '0?(1?)?0*'
     # expresion = 'a(a?b*|c+)b|baa'
     # expresion = '(a*|b*)c'
@@ -64,7 +64,7 @@ def mainAyB():
 
 def mainC():
 
-    yalFile = 'yal/yalexE.yal'
+    yalFile = 'yal/slr-1.yal'
 
     yalRead = yalReader(yalFile)
     yalRead.startReader()
