@@ -76,8 +76,9 @@ class DFA:
 
         temp = AFD()
         temp.alphabet = afnInput.alphabet
-        temp.alphabet.sort()  # revisar si hace falta o no
-        temp.alphabet.remove('ε')
+        temp.alphabet.sort()
+        if 'ε' in temp.alphabet:
+            temp.alphabet.remove('ε')
         tempEpisolon = self.episolon(afnInput.start_state)
         tempEpisolon.append(afnInput.start_state)
         tempEpisolon = list(set(tempEpisolon))
@@ -112,6 +113,7 @@ class DFA:
                 addStates = list(set(addStates))
 
                 if len(addStates) != 0:
+                    # 23 y 18 / b
                     tempChecker = self.dontRepeat(addStates, temp)
                     if tempChecker == True:
 
@@ -258,7 +260,6 @@ class DFA:
 
     def symbolGet(self, states, symbol):
         symbolList = []
-
         for state in states:
             for transition in state.transition_to:
                 if transition.symbol == symbol:
@@ -269,10 +270,16 @@ class DFA:
     def dontRepeat(self, states, afdActual):
         for node in afdActual.states:
             if len(node.related) == len(states):
+                temp = 0
                 for state in states:
-                    if state not in node.related:
-                        break
-                    else:
-                        return node
-
+                    if state in node.related:
+                        temp = temp + 1
+                if temp == len(states):
+                    return node
         return True
+
+    def check_lists_equal(list1, list2):
+        check = []
+        for element in list1:
+            if element not in list2:
+                check

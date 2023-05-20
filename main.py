@@ -29,17 +29,15 @@ def main():
     #     else:
     #         pasar = False
 
-    expresion = '(a*|b*)c'
+    # expresion = '(a*|b*)c'
     # expresion = '0?(1?)?0*'
     # expresion = 'a(a?b*|c+)b|baa'
-    # expresion = '(a*|b*)c'
+    expresion = '(a*|b*)c'
     # expresion = '(b|b)*abb(a|b)*'
     # expresion = '(a|ε)b(a+)c?'
     # expresion = '(a|b)*a(a|b)(a|b)'
-    # expresionInput = input('Ingrese el redex a evaluar. Por ejemplo: a|b')
-    # expresion = evaluateInput().evaluate(expresionInput)
     # expresion = 'a(a?b*|c+)b|baa'
-    # expresion = '(a?)'
+    # expresion = '(a?)'a
 
     # PRIMERO SE PASA A POSTFIX
     print('___________________________')
@@ -51,6 +49,7 @@ def main():
     # VAMOS A PASAR EL POSTFIX A UN ARBOL
     tree = Tree(postFix=postFix)
     tree.postFixToTree()
+    print('hola')
 
     # VAMOS A PASAR EL ARBOL A UN NFA
     nfa = NFA(tree=tree.tree)
