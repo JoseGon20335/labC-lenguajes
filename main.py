@@ -32,12 +32,11 @@ def main():
     # expresion = '(a*|b*)c'
     # expresion = '0?(1?)?0*'
     # expresion = 'a(a?b*|c+)b|baa'
-    expresion = '(a*|b*)c'
     # expresion = '(b|b)*abb(a|b)*'
     # expresion = '(a|ε)b(a+)c?'
     # expresion = '(a|b)*a(a|b)(a|b)'
     # expresion = 'a(a?b*|c+)b|baa'
-    # expresion = '(a?)'a
+    expresion = '(a?)'
 
     # PRIMERO SE PASA A POSTFIX
     print('___________________________')
