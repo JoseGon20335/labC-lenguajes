@@ -14,11 +14,19 @@ def passToPostFix(redex):
             fixRedex += c + '.'
         elif i+1 != len(redex) and c == ')' and redex[i+1] in alfabetoA:
             fixRedex += c + '.'
+        elif i+1 != len(redex) and c == ')' and redex[i+1] == '(':
+            fixRedex += c + '.'
         elif i+1 != len(redex) and c == '?' and redex[i+1] in alfabetoA:
+            fixRedex += c + '.'
+        elif i+1 != len(redex) and c == '?' and redex[i+1] == '(':
             fixRedex += c + '.'
         elif i+1 != len(redex) and c == '*' and redex[i+1] in alfabetoA:
             fixRedex += c + '.'
+        elif i+1 != len(redex) and c == '*' and redex[i+1] == '(':
+            fixRedex += c + '.'
         elif i+1 != len(redex) and c == '+' and redex[i+1] in alfabetoA:
+            fixRedex += c + '.'
+        elif i+1 != len(redex) and c == '+' and redex[i+1] == '(':
             fixRedex += c + '.'
         else:
             fixRedex += c

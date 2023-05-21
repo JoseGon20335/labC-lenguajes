@@ -36,14 +36,14 @@ class Tree(object):
                 tree.append(temp)
 
             elif c == '?':
-                temp = Node(c, None, None)
+                temp = Node('|', None, None)
                 episilum = Node('ε', None, None)
                 temp.leftLeaf = tree.pop()
                 temp.rightLeaf = episilum
                 tree.append(temp)
 
             elif c == '+':
-                temp = Node(c, None, None)
+                temp = Node('.', None, None)
                 temp.leftLeaf = tree[-1]
                 kleene = Node('*', None, None)
                 kleene.leftLeaf = tree.pop()
