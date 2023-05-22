@@ -9,6 +9,7 @@ class yalReader:
         print('hola')
         self.readGoodTokens()
         print(self.tokens)
+        self.readRules()
 
     def readTokens(self):
         # Open the file for reading
@@ -68,6 +69,8 @@ class yalReader:
         respuesta = ''
         for i in result:
             respuesta = respuesta + str(i) + '|'
+
+        respuesta = respuesta[:-1:]
         self.tokens[key] = respuesta
 
     def tokenToData(self, temp):
@@ -76,18 +79,19 @@ class yalReader:
         for position, value in enumerate(temp):
             word = word + value
             if(value == "(" or value == ')' or value == '|' or value == '*' or value == '+' or value == '?' or value == '.'):
+                word2 = word2 + word
                 word = ''
-                word2 = word2 + value
             if word in self.tokens:
                 key = word
                 word = ''
                 for position2, value2 in enumerate(temp):
                     if position < position2:
                         temp2 = self.tokenToData(temp[position2:])
-                        word2 = self.tokens[key]
+                        word2 = word2 + self.tokens[key]
                         word2 = word2 + temp2
                         return word2
 
         return word2
 
-# leer por aparte
+    def readRules(self):
+        pass
