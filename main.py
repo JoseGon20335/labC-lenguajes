@@ -49,7 +49,6 @@ def mainAyB():
     # VAMOS A PASAR EL POSTFIX A UN ARBOL
     tree = Tree(postFix=postFix)
     tree.postFixToTree()
-    print('hola')
 
     # VAMOS A PASAR EL ARBOL A UN NFA
     nfa = NFA(tree=tree.tree)
@@ -65,7 +64,31 @@ def mainC():
     yalFile = 'yal/slr-1.yal'
 
     yalRead = yalReader(yalFile)
-    yalRead.startReader()
+    yalexInput = yalRead.startReader()
+
+    print('___________________________')
+    print('expresion: ', yalexInput)
+    postFix = postfix.passToPostFix(yalexInput)
+    print('postfix: ', postFix)
+    print('___________________________')
+
+    print('___________________________')
+    # VAMOS A PASAR EL POSTFIX A UN ARBOL
+    tree = Tree(postFix=postFix)
+    tree.postFixToTree()
+    print('___________________________')
+
+    print('___________________________')
+    # VAMOS A PASAR EL ARBOL A UN NFA
+    nfa = NFA(tree=tree.tree)
+    nfa.convert()
+    print('___________________________')
+
+    print('___________________________')
+    # VAMOS A PASAR EL NFA A UN AFD
+    dfa = DFA(afn=nfa.afn, alfabeto=alfabetoC)
+    dfa.convert()
+    print('___________________________')
 
 
 # mainAyB()

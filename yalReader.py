@@ -2,14 +2,16 @@ class yalReader:
     def __init__(self, yalName):
         self.yalName = yalName
         self.tokens = {}
-        self.goodTokens = []
+        self.goodTokens = {}
+        self.ruleTokens = ''
 
     def startReader(self):
         self.readTokens()
-        print('hola')
         self.readGoodTokens()
         print(self.tokens)
-        self.readRules()
+        self.passRules()
+        print(self.goodTokens)
+        return self.ruleTokens
 
     def readTokens(self):
         # Open the file for reading
@@ -29,7 +31,6 @@ class yalReader:
                         words.append(word)
                         word = ''
                 words.append(word)
-                print(words)
                 for position, word in enumerate(words):
                     if word == 'let':
                         temp = words[position + 3]
@@ -93,5 +94,61 @@ class yalReader:
 
         return word2
 
-    def readRules(self):
-        pass
+    def passRules(self):
+        startRead = False
+        self.ruleTokens = ''
+        # Open the file for reading
+        with open(self.yalName, "r") as file:
+            # Loop over each line in the file
+            for line in file:
+                words = []
+                commilas = False
+                word = ''
+                for char in line:
+                    if char == "'":
+                        commilas = True
+
+                    if char != ' ' or commilas:
+                        word = word + char
+                    else:
+                        if word == '':
+                            continue
+                        if word.endswith('\n'):
+                            word = word.rstrip("\n")
+                            words.append(word)
+                        else:
+                            words.append(word)
+                        word = ''
+                if word.endswith('\n'):
+                    word = word.rstrip("\n")
+                    words.append(word)
+                else:
+                    words.append(word)
+                print(words)
+                returnTemp = False
+                tokenTemp = ''
+                comentarioTemp = False
+                for position, word in enumerate(words):
+                    # esto va a tronar por que cuando quiera buscar el 1 o 2 no va a encontrar nada al final y morira
+                    if words[0] == 'rule' and words[1] == 'tokens' and words[2] == '=':
+                        startRead = True
+                    if word == '(*':
+                        comentarioTemp = True
+                    elif word == '*)':
+                        comentarioTemp = False
+                    if startRead and not comentarioTemp:
+                        if word in self.tokens and not returnTemp:
+                            self.ruleTokens = self.ruleTokens + \
+                                self.tokens[word]
+                            tokenTemp = word
+                        elif word.startswith("'") and word.endswith("'"):
+                            self.ruleTokens = self.ruleTokens + \
+                                ord(word[1:-1:])
+                            tokenTemp = ord(word[1:-1:])
+                        if word == '{':
+                            returnTemp = True
+                        elif returnTemp:
+                            if word == '}':
+                                returnTemp = False
+                            if word != 'return' and returnTemp:
+                                self.goodTokens[tokenTemp] = word
