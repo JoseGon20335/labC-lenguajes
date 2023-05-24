@@ -1,9 +1,0 @@
-// resultado
-digraph Tree {
-	graph [rankdir=TB]
-	1952709986576 [label="|" shape=circle]
-	1952709985808 [label=a shape=circle]
-	1952709986576 -> 1952709985808
-	1952709986672 [label="ε" shape=circle]
-	1952709986576 -> 1952709986672
-}

@@ -1,7 +1,0 @@
-// resultado
-digraph AFD {
-	graph [rankdir=LR]
-	1952709989024 [label=A shape=circle]
-	1952709992768 [label=B shape=doublecircle]
-	1952709989024 -> 1952709992768 [label=a]
-}
