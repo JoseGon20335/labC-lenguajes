@@ -4,11 +4,12 @@ from collections import deque
 
 class createGraph(object):
 
-    def __init__(this, data=None) -> None:
+    def __init__(this, data=None, arbolName=None) -> None:
         this.data = data
+        this.arbolName = arbolName
 
     def createTree(this):
-        tree = Digraph('Tree', 'resultado')
+        tree = Digraph(this.arbolName, 'resultado')
         tree.graph_attr['rankdir'] = 'TB'
         tree = this.addLeaftToTree(tree, this.data)
         tree.view()

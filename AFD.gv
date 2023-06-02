@@ -1,7 +1,15 @@
 // resultado
 digraph AFD {
 	graph [rankdir=LR]
-	1952709989024 [label=A shape=circle]
-	1952709992768 [label=B shape=doublecircle]
-	1952709989024 -> 1952709992768 [label=a]
+	1594047709040 [label=A shape=circle]
+	1594047702752 [label=B shape=circle]
+	1594047700928 [label=C shape=circle]
+	1594047700832 [label=D shape=doublecircle]
+	1594047709040 -> 1594047702752 [label=a]
+	1594047709040 -> 1594047700928 [label=b]
+	1594047709040 -> 1594047700832 [label=c]
+	1594047702752 -> 1594047702752 [label=a]
+	1594047702752 -> 1594047700832 [label=c]
+	1594047700928 -> 1594047700928 [label=b]
+	1594047700928 -> 1594047700832 [label=c]
 }
