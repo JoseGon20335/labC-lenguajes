@@ -1,4 +1,4 @@
-from createGraphAfd import *
+from createGraphAfdDirect import *
 from Tree import *
 
 
@@ -37,6 +37,8 @@ class DFADirect:
         tree.postFixToTree()
         self.afdDirecto(tree)
         print(tree)
+        self.print_result()
+        createGraphAfdDirect(self).createGraph()
 
     def afdDirecto(self, tree):
         self.countLeaf(tree.tree)
@@ -66,8 +68,9 @@ class DFADirect:
                 temp = []
                 for position in state.related:
                     if position.name == symbol:
-                        temp.append(position)
-                        temp.extend(position.followPos)
+                        for position2 in position.followPos:
+                            temp.append(position2)
+                        # temp.extend(position.followPos)
                         temp = list(set(temp))
 
                 if len(temp) > 0:
@@ -76,13 +79,15 @@ class DFADirect:
 
                     if dontRepeat == True:
 
+                        checker = []
                         for tempState in temp:
-                            if tempState.name == '#':
-                                addState = NODE(str(conta), 1, temp)
-                                self.final_states.append(addState)
-                                break
-                            else:
-                                addState = NODE(str(conta), 0, temp)
+                            checker.append(tempState.name)
+
+                        if '#' in checker:
+                            addState = NODE(str(conta), 1, temp)
+                            self.final_states.append(addState)
+                        else:
+                            addState = NODE(str(conta), 0, temp)
 
                         self.states.append(addState)
                         conta += 1
@@ -94,7 +99,7 @@ class DFADirect:
                     else:
                         state.add_transition(dontRepeat, symbol)
 
-        return
+        return self.states
 
     def countLeaf(self, node):
         if node.leftLeaf == None and node.rightLeaf == None and node.name != 'ε':
@@ -230,3 +235,19 @@ class DFADirect:
             if node.name == states.name:
                 return node
         return True
+
+    def print_result(self):
+        print('_________AFDirecto_________')
+        print('Estados: ')
+        for estado in self.states:
+            print(estado.name)
+        print('Alfabeto: ')
+        for symbol in self.alphabet:
+            print(symbol)
+        print('Estado inicial: ')
+        print(self.start_state.name)
+        print('Estados finales: ')
+        for state in self.final_states:
+            print(state.name)
+
+        print('___________________________')
