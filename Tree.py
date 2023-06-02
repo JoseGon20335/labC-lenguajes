@@ -2,16 +2,22 @@ from graph.createGraph import *
 
 
 class Node:
-    def __init__(this, name, rightLeaf, leftLeaf):
+    def __init__(this, name, rightLeaf, leftLeaf, nameOfTree=None):
         this.name = name
         this.rightLeaf = rightLeaf
         this.leftLeaf = leftLeaf
+        this.numberId = None
+        this.nullable = None
+        this.firstPos = []
+        this.lastPos = []
+        this.followPos = []
 
 
 class Tree(object):
 
-    def __init__(this, postFix) -> None:
+    def __init__(this, postFix, nameOfTree) -> None:
         this.postFix = postFix
+        this.nameOfTree = nameOfTree
         this.tree = None
 
     def postFixToTree(this):
@@ -58,5 +64,5 @@ class Tree(object):
         return this.tree
 
     def dataToGraph(this):
-        graficador = createGraph(data=this.tree)
+        graficador = createGraph(data=this.tree, arbolName=this.nameOfTree)
         graficador.createTree()

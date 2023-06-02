@@ -5,7 +5,7 @@ import postfix
 from Tree import *
 from DFA import *
 from yalReader import *
-
+from DFADirect import *
 
 alfabetoA = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
              's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'ε', 'E', 'ϵ']
@@ -18,26 +18,14 @@ precedence = {'(': 1, '(': 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 
 def mainAyB():
-    pasar = True
-    expresion = ''
-    # while pasar:
-    #     print('Ingrese la expresion regular:')
-    #     expresion = input()
-    #     if expresion == '':
-    #         print('Expresion regular vacia.')
-    #     elif expresion == ' ':
-    #         print('Expresion regular vacia.')
-    #     else:
-    #         pasar = False
-
-    # expresion = '(a*|b*)c'
+    expresion = '(a*|b*)c'
     # expresion = '0?(1?)?0*'
     # expresion = 'a(a?b*|c+)b|baa'
     # expresion = '(b|b)*abb(a|b)*'
     # expresion = '(a|ε)b(a+)c?'
     # expresion = '(a|b)*a(a|b)(a|b)'
     # expresion = 'a(a?b*|c+)b|baa'
-    expresion = '(a?)'
+    # expresion = '(a?)'
 
     # PRIMERO SE PASA A POSTFIX
     print('___________________________')
@@ -47,16 +35,26 @@ def mainAyB():
     print('___________________________')
 
     # VAMOS A PASAR EL POSTFIX A UN ARBOL
-    tree = Tree(postFix=postFix)
+    tree = Tree(postFix=postFix, nameOfTree='tree')
     tree.postFixToTree()
+
+    print('___________________________')
 
     # VAMOS A PASAR EL ARBOL A UN NFA
     nfa = NFA(tree=tree.tree)
     nfa.convert()
 
+    print('___________________________')
+
     # VAMOS A PASAR EL NFA A UN AFD
-    dfa = DFA(afn=nfa.afn, alfabeto=alfabetoC)
+    dfa = DFA(nfa.afn, alfabetoC)
     dfa.convert()
+
+    print('___________________________')
+
+    # VAMOS A PASAR EL POSTFIX A DFA DIRECTO
+    dfaDirecto = DFADirect()
+    dfaDirecto.convert(postfix=postFix)
 
 
 def mainC():
