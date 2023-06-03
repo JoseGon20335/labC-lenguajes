@@ -142,16 +142,13 @@ class DFADirect:
                 self.firstPos(node.leftLeaf)
                 self.firstPos(node.rightLeaf)
                 if node.name == '.' and node.leftLeaf.nullable == True:
-                    node.firstPos = list(set(
-                        node.leftLeaf.firstPos + node.rightLeaf.firstPos))
+                    node.firstPos = node.leftLeaf.firstPos + node.rightLeaf.firstPos
                 elif node.name == '.' and node.rightLeaf.nullable == False:
                     node.firstPos = node.leftLeaf.firstPos
 
                 if node.name == '|':
-                    node.firstPos = list(set(
-                        node.leftLeaf.firstPos + node.rightLeaf.firstPos))
-                    node.lastPos = list(set(
-                        node.leftLeaf.lastPos + node.rightLeaf.lastPos))
+                    node.firstPos = node.leftLeaf.firstPos + node.rightLeaf.firstPos
+                    node.lastPos = node.leftLeaf.lastPos + node.rightLeaf.lastPos
 
             elif node.name == '*' or node.name == '+' or node.name == '?':
                 self.firstPos(node.leftLeaf)
@@ -168,14 +165,12 @@ class DFADirect:
                 self.lastPos(node.rightLeaf)
 
                 if node.name == '.' and node.rightLeaf.nullable == True:
-                    node.lastPos = list(set(
-                        node.leftLeaf.lastPos + node.rightLeaf.lastPos))
+                    node.lastPos = node.leftLeaf.lastPos + node.rightLeaf.lastPos
                 else:
                     node.lastPos = node.rightLeaf.lastPos
 
                 if node.name == '|':
-                    node.lastPos = list(set(
-                        node.leftLeaf.lastPos + node.rightLeaf.lastPos))
+                    node.lastPos = node.leftLeaf.lastPos + node.rightLeaf.lastPos
 
             elif node.name == '*' or node.name == '+' or node.name == '?':
                 self.lastPos(node.leftLeaf)
