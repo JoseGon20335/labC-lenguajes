@@ -9,7 +9,8 @@ class createGraph(object):
         this.arbolName = arbolName
 
     def createTree(this):
-        tree = Digraph(this.arbolName, 'resultado')
+        nameFile = 'results/' + this.arbolName
+        tree = Digraph(nameFile, 'resultado')
         tree.graph_attr['rankdir'] = 'TB'
         tree = this.addLeaftToTree(tree, this.data)
         tree.view()

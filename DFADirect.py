@@ -32,7 +32,9 @@ class DFADirect:
         self.leafs = []
 
     def convert(self, postfix):
-        postfix = postfix + '#.'
+        postfix.append('#')
+        postfix.append('.')
+        # postfix = postfix + '#.'
         tree = Tree(postFix=postfix, nameOfTree='treeDFADirect')
         tree.postFixToTree()
         self.afdDirecto(tree)

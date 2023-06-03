@@ -67,11 +67,25 @@ class yalReader:
                 a = ord(letter)
                 for i in range(de, a + 1):
                     result.append(i)
-        respuesta = ''
+        respuesta = '('
+        checker = False
         for i in result:
+            if(i == 92):
+                checker = True
+                continue
+            if checker:
+                if(i == 116):
+                    i = 9
+                elif(i == 110):
+                    i = 10
+                elif(i == 115):
+                    i = 32
+                checker = False
+
             respuesta = respuesta + str(i) + '|'
 
         respuesta = respuesta[:-1:]
+        respuesta = respuesta + ')'
         self.tokens[key] = respuesta
 
     def tokenToData(self, temp):
