@@ -14,15 +14,18 @@ class NODE:
         self.symbol = symbol
         self.related = related
         self.transition_to = []
+        self.token = ''
 
     def add_transition(self, transition_to, transition_name):
         transitionTemp = transition(transition_to, transition_name)
         self.transition_to.append(transitionTemp)
 
+    def add_token(self, token):
+        self.token = token
+
 
 class DFADirect:
     def __init__(self):
-        self.state_counter = 0
         self.expectStates = []
         self.states = []
         self.alphabet = []
@@ -30,11 +33,11 @@ class DFADirect:
         self.final_states = []
         self.state_counter = 0
         self.leafs = []
+        self.tokensFinals = []
 
     def convert(self, postfix):
         postfix.append('#')
         postfix.append('.')
-        # postfix = postfix + '#.'
         tree = Tree(postFix=postfix, nameOfTree='treeDFADirect')
         tree.postFixToTree()
         self.afdDirecto(tree)
@@ -53,13 +56,16 @@ class DFADirect:
         conta = 0
 
         addState = None
+        isFinal = False
         for firstPos in tree.tree.firstPos:
-            if firstPos.name == '#':
-                addState = NODE(str(conta), 3, tree.tree.firstPos)
-                self.final_states.append(addState)
-            else:
-                addState = NODE(str(conta), 2, tree.tree.firstPos)
-                break
+            if '#' in firstPos.name:
+                isFinal = True
+
+        if isFinal:
+            addState = NODE(str(conta), 3, tree.tree.firstPos)
+            self.final_states.append(addState)
+        else:
+            addState = NODE(str(conta), 2, tree.tree.firstPos)
 
         self.start_state = addState
         self.states.append(addState)
@@ -81,12 +87,15 @@ class DFADirect:
 
                     if dontRepeat == True:
 
-                        checker = []
+                        tokenAdd = ''
                         for tempState in temp:
-                            checker.append(tempState.name)
+                            if '#' in tempState.name:
+                                tokenAdd = tempState.name
+                                self.tokensFinals.append(tempState.name)
 
-                        if '#' in checker:
+                        if tokenAdd != '':
                             addState = NODE(str(conta), 1, temp)
+                            addState.add_token(tokenAdd)
                             self.final_states.append(addState)
                         else:
                             addState = NODE(str(conta), 0, temp)
@@ -120,17 +129,23 @@ class DFADirect:
         elif node.leftLeaf == None and node.rightLeaf == None:
             node.nullable = False
         else:
-            if node.name == '.' or node.name == '|':
-                self.nullable(node.leftLeaf)
-                self.nullable(node.rightLeaf)
-                if node.leftLeaf.nullable == True and node.rightLeaf.nullable == True:
-                    node.nullable = True
-                else:
-                    node.nullable = False
-
-            elif node.name == '*' or node.name == '+' or node.name == '?':
+            if node.name == '*' or node.name == '+' or node.name == '?':
                 self.nullable(node.leftLeaf)
                 node.nullable = True
+            elif node.name == '.' or node.name == '|':
+                self.nullable(node.leftLeaf)
+                self.nullable(node.rightLeaf)
+
+                if node.name == '.':
+                    if node.leftLeaf.nullable == True and node.rightLeaf.nullable == True:
+                        node.nullable = True
+                    else:
+                        node.nullable = False
+                elif node.name == '|':
+                    if node.leftLeaf.nullable == True or node.rightLeaf.nullable == True:
+                        node.nullable = True
+                    else:
+                        node.nullable = False
 
     def firstPos(self, node):
         if node.leftLeaf == None and node.rightLeaf == None and node.name == 'ε':
@@ -138,21 +153,22 @@ class DFADirect:
         elif node.leftLeaf == None and node.rightLeaf == None:
             node.firstPos.append(node)
         else:
-            if node.name == '.' or node.name == '|':
-                self.firstPos(node.leftLeaf)
-                self.firstPos(node.rightLeaf)
-                if node.name == '.' and node.leftLeaf.nullable == True:
-                    node.firstPos = node.leftLeaf.firstPos + node.rightLeaf.firstPos
-                elif node.name == '.' and node.rightLeaf.nullable == False:
-                    node.firstPos = node.leftLeaf.firstPos
-
-                if node.name == '|':
-                    node.firstPos = node.leftLeaf.firstPos + node.rightLeaf.firstPos
-                    node.lastPos = node.leftLeaf.lastPos + node.rightLeaf.lastPos
-
-            elif node.name == '*' or node.name == '+' or node.name == '?':
+            if node.name == '*' or node.name == '+' or node.name == '?':
                 self.firstPos(node.leftLeaf)
                 node.firstPos = node.leftLeaf.firstPos
+            elif node.name == '.' or node.name == '|':
+                self.firstPos(node.leftLeaf)
+                self.firstPos(node.rightLeaf)
+
+                if node.name == '.':
+                    if node.leftLeaf.nullable == True:
+                        node.firstPos = node.leftLeaf.firstPos + node.rightLeaf.firstPos
+
+                    elif node.leftLeaf.nullable == False:
+                        node.firstPos = node.leftLeaf.firstPos
+
+                elif node.name == '|':
+                    node.firstPos = node.leftLeaf.firstPos + node.rightLeaf.firstPos
 
     def lastPos(self, node):
         if node.leftLeaf == None and node.rightLeaf == None and node.name == 'ε':
@@ -160,7 +176,10 @@ class DFADirect:
         elif node.leftLeaf == None and node.rightLeaf == None:
             node.lastPos.append(node)
         else:
-            if node.name == '.' or node.name == '|':
+            if node.name == '*' or node.name == '+' or node.name == '?':
+                self.lastPos(node.leftLeaf)
+                node.lastPos = node.leftLeaf.lastPos
+            elif node.name == '.' or node.name == '|':
                 self.lastPos(node.leftLeaf)
                 self.lastPos(node.rightLeaf)
 
@@ -171,10 +190,6 @@ class DFADirect:
 
                 if node.name == '|':
                     node.lastPos = node.leftLeaf.lastPos + node.rightLeaf.lastPos
-
-            elif node.name == '*' or node.name == '+' or node.name == '?':
-                self.lastPos(node.leftLeaf)
-                node.lastPos = node.leftLeaf.lastPos
 
     def followPos(self, node):
         if node.name == '.':
@@ -207,7 +222,7 @@ class DFADirect:
 
     def symbolDirect(self, node):
         if node.leftLeaf == None and node.rightLeaf == None:
-            if node.name != 'ε' and node.name != '#':
+            if node.name != 'ε' and node.name[:1] != '#':
                 if node.name not in self.alphabet:
                     self.alphabet.append(node.name)
         else:

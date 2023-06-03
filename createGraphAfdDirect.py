@@ -8,7 +8,7 @@ class createGraphAfdDirect(object):
         this.data = data
 
     def createGraph(this):
-        afdGraph = Digraph('AFD Directo', 'resultado')
+        afdGraph = Digraph('results/AFD Directo', 'resultado')
         afdGraph.graph_attr['rankdir'] = 'LR'
         afdGraph = this.addNodeToGraph(afdGraph, this.data)
         afdGraph.view()

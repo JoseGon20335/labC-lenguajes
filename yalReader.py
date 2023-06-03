@@ -153,10 +153,13 @@ class yalReader:
                         if word in self.tokens and not returnTemp:
                             self.ruleTokens = self.ruleTokens + \
                                 self.tokens[word]
+                            self.ruleTokens = self.ruleTokens + '."#' + word + '"'
                             tokenTemp = word
                         elif word.startswith("'") and word.endswith("'"):
                             self.ruleTokens = self.ruleTokens + \
                                 str(ord(word[1:-1:]))
+                            self.ruleTokens = self.ruleTokens + \
+                                '."#' + word[1:-1:] + '"'
                             tokenTemp = str(ord(word[1:-1:]))
                         elif word == '|':
                             self.ruleTokens = self.ruleTokens + '|'
