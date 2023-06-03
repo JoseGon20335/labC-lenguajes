@@ -5,6 +5,7 @@ import postfix
 from Tree import *
 from DFA import *
 from DFADirect import *
+from simulacion import *
 
 alfabetoA = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
              's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'ε', 'E', 'ϵ']
@@ -54,6 +55,23 @@ def main():
     # VAMOS A PASAR EL POSTFIX A DFA DIRECTO
     dfaDirecto = DFADirect()
     dfaDirecto.convert(postfix=postFix)
+
+    print('___________________________')
+    # # VAMOS A SIMULAR
+    print('VAMOS A SIMULAR INGRESE LA CADENA AFN: \n')
+    inputSim = input()
+    sim = simulacion(nfa.afn, inputSim)
+    sim.iniciarSimulacion()
+
+    print('VAMOS A SIMULAR INGRESE LA CADENA AFD: \n')
+    inputSim = input()
+    sim = simulacion(dfa.afd, inputSim)
+    sim.iniciarSimulacion()
+
+    print('VAMOS A SIMULAR INGRESE LA CADENA AFD DIRECTO: \n')
+    inputSim = input()
+    sim = simulacion(dfaDirecto, inputSim)
+    sim.iniciarSimulacion()
 
 
 main()

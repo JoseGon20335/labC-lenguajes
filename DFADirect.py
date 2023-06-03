@@ -118,17 +118,23 @@ class DFADirect:
         elif node.leftLeaf == None and node.rightLeaf == None:
             node.nullable = False
         else:
-            if node.name == '.' or node.name == '|':
-                self.nullable(node.leftLeaf)
-                self.nullable(node.rightLeaf)
-                if node.leftLeaf.nullable == True and node.rightLeaf.nullable == True:
-                    node.nullable = True
-                else:
-                    node.nullable = False
-
-            elif node.name == '*' or node.name == '+' or node.name == '?':
+            if node.name == '*' or node.name == '+' or node.name == '?':
                 self.nullable(node.leftLeaf)
                 node.nullable = True
+            elif node.name == '.' or node.name == '|':
+                self.nullable(node.leftLeaf)
+                self.nullable(node.rightLeaf)
+
+                if node.name == '.':
+                    if node.leftLeaf.nullable == True and node.rightLeaf.nullable == True:
+                        node.nullable = True
+                    else:
+                        node.nullable = False
+                elif node.name == '|':
+                    if node.leftLeaf.nullable == True or node.rightLeaf.nullable == True:
+                        node.nullable = True
+                    else:
+                        node.nullable = False
 
     def firstPos(self, node):
         if node.leftLeaf == None and node.rightLeaf == None and node.name == 'ε':
@@ -136,24 +142,22 @@ class DFADirect:
         elif node.leftLeaf == None and node.rightLeaf == None:
             node.firstPos.append(node)
         else:
-            if node.name == '.' or node.name == '|':
-                self.firstPos(node.leftLeaf)
-                self.firstPos(node.rightLeaf)
-                if node.name == '.' and node.leftLeaf.nullable == True:
-                    node.firstPos = list(set(
-                        node.leftLeaf.firstPos + node.rightLeaf.firstPos))
-                elif node.name == '.' and node.rightLeaf.nullable == False:
-                    node.firstPos = node.leftLeaf.firstPos
-
-                if node.name == '|':
-                    node.firstPos = list(set(
-                        node.leftLeaf.firstPos + node.rightLeaf.firstPos))
-                    node.lastPos = list(set(
-                        node.leftLeaf.lastPos + node.rightLeaf.lastPos))
-
-            elif node.name == '*' or node.name == '+' or node.name == '?':
+            if node.name == '*' or node.name == '+' or node.name == '?':
                 self.firstPos(node.leftLeaf)
                 node.firstPos = node.leftLeaf.firstPos
+            elif node.name == '.' or node.name == '|':
+                self.firstPos(node.leftLeaf)
+                self.firstPos(node.rightLeaf)
+
+                if node.name == '.':
+                    if node.leftLeaf.nullable == True:
+                        node.firstPos = node.leftLeaf.firstPos + node.rightLeaf.firstPos
+
+                    elif node.leftLeaf.nullable == False:
+                        node.firstPos = node.leftLeaf.firstPos
+
+                elif node.name == '|':
+                    node.firstPos = node.leftLeaf.firstPos + node.rightLeaf.firstPos
 
     def lastPos(self, node):
         if node.leftLeaf == None and node.rightLeaf == None and node.name == 'ε':
@@ -161,23 +165,20 @@ class DFADirect:
         elif node.leftLeaf == None and node.rightLeaf == None:
             node.lastPos.append(node)
         else:
-            if node.name == '.' or node.name == '|':
+            if node.name == '*' or node.name == '+' or node.name == '?':
+                self.lastPos(node.leftLeaf)
+                node.lastPos = node.leftLeaf.lastPos
+            elif node.name == '.' or node.name == '|':
                 self.lastPos(node.leftLeaf)
                 self.lastPos(node.rightLeaf)
 
                 if node.name == '.' and node.rightLeaf.nullable == True:
-                    node.lastPos = list(set(
-                        node.leftLeaf.lastPos + node.rightLeaf.lastPos))
+                    node.lastPos = node.leftLeaf.lastPos + node.rightLeaf.lastPos
                 else:
                     node.lastPos = node.rightLeaf.lastPos
 
                 if node.name == '|':
-                    node.lastPos = list(set(
-                        node.leftLeaf.lastPos + node.rightLeaf.lastPos))
-
-            elif node.name == '*' or node.name == '+' or node.name == '?':
-                self.lastPos(node.leftLeaf)
-                node.lastPos = node.leftLeaf.lastPos
+                    node.lastPos = node.leftLeaf.lastPos + node.rightLeaf.lastPos
 
     def followPos(self, node):
         if node.name == '.':
