@@ -8,6 +8,7 @@ class yapalReader:
     def startReader(self):
         self.readTokens()
         print('terminar')
+        return self
 
     def readTokens(self):
         self.ruleTokens = ''
@@ -82,6 +83,7 @@ class yapalReader:
                                             tempToAdd)
                                         readLine = False
                             else:
-                                self.expresions[word] = []
-                                wordExpresionSave = word
+                                valueIAdd = word.replace(':', '')
+                                self.expresions[valueIAdd] = []
+                                wordExpresionSave = valueIAdd
                                 savingExpresion = True

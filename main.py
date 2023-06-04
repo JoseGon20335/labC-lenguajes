@@ -10,6 +10,7 @@ from simulacion import *
 from writeFile import *
 from results.simulacionArchivo import tokens
 from yapalReader import *
+from LR0 import *
 
 alfabetoA = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
              's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'ε', 'E', 'ϵ']
@@ -26,38 +27,21 @@ def main():
     yalFile = 'yal/slr-1.yal'
     yapalFile = 'yapar/slr-1.yalp'
 
+    print('___________________________')
     yapalRead = yapalReader(yapalFile)
     yapalInput = yapalRead.startReader()
+    print('___________________________')
 
+    print('___________________________')
     yalRead = yalReader(yalFile)
     yalexInput = yalRead.startReader()
-
-    print('___________________________')
-    print('expresion: ', yalexInput)
-    postFix = postfix.passToPostFix(yalexInput)
-    print('postfix: ', postFix)
     print('___________________________')
 
     print('___________________________')
-    # VAMOS A PASAR EL NFA A UN AFD
-    dfa = DFADirect()
-    dfa.convert(postfix=postFix)
-    print('___________________________')
-    sim = simulacion(dfa)
-    sim.iniciarSimulacion()
-    print('___________________________')
-    print('___________________________')
-    transformed_dict = {}
-    for key, value in yalRead.goodTokens.items():
-        if key.isdigit():
-            transformed_key = chr(int(key))
-        else:
-            transformed_key = key
-        transformed_dict[transformed_key] = value
-
-    writeF = writeFile('simulacionArchivo')
-    writeF.write(transformed_dict)
-    print('___________________________')
+    print(yapalInput.tokens)
+    print(yapalInput.expresions)
+    lr0 = LR0()
+    lr0.startLR0(yapalInput.expresions, yapalInput.tokens)
     print('___________________________')
 
 

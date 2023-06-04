@@ -1,4 +1,4 @@
-from graph.createGraphAfd import *
+from graph.createGraphLr import *
 
 
 class transition:
@@ -8,10 +8,10 @@ class transition:
 
 
 class NODE:
-    def __init__(self, name, symbol, related):
+    def __init__(self, name, symbol, productions):
         self.name = name
         self.symbol = symbol
-        self.related = related
+        self.productions = productions
         self.transition_to = []
 
     def add_transition(self, transition_to, transition_name):
@@ -21,46 +21,161 @@ class NODE:
 
 class LR0:
     def __init__(self):
-        self.states = []
         self.alphabet = []
+        self.state_counter = 0
+        self.expresions = []
+        self.tokens = []
+        self.states = []
         self.start_state = None
         self.final_states = []
+        self.initial_state = None
 
-    def add_state(self, state):
-        self.states.append(state)
+    def startLR0(self, expresions, tokens):
+        self.tokens = tokens
+        self.formateExpresiones(expresions=expresions)
+        self.expresions = self.agregarPunto()
 
-    def add_alphabet(self, symbol):
-        self.alphabet.append(symbol)
+        for i in self.expresions:
+            checkTerminal = i.split('->')[0]
+            if checkTerminal not in self.tokens:
 
-    def set_final_state(self, state):
-        self.final_states.append(state)
+                self.start_state = i
+                clousure = self.clousure(i)
+                node = NODE(self.stringIficador(clousure), 1, clousure)
+                self.initial_state = node
+                break
 
-    def set_super_final_state(self, state):
-        self.final_states = [state]
+        self.states.append(self.initial_state)
 
-    def get_new_states(self, new_states):
-        update_states = []
-        if len(self.states) != 0:
-            for state in self.states:
-                update_states.append(state)
-        for state in new_states:
-            update_states.append(state)
-        self.states = update_states
-
-    def get_new_symbol(self, new_symbol):
-        update_symbol = []
-        if len(self.alphabet) != 0:
+        for state in self.states:
             for symbol in self.alphabet:
-                update_symbol.append(symbol)
-        for symbol in new_symbol:
-            update_symbol.append(symbol)
-        self.alphabet = update_symbol
+                node = self.gatoGoto(state, symbol)
+                if node != None:
+                    check = True
+                    for i in self.states:
+                        if i.name == node.name:
+                            check = False
+                            break
+                    if check:
+                        self.states.append(node)
 
+                        if node.symbol == 1:
+                            self.final_states.append(node)
 
-class DFA:
-    def __init__(self, afn, alfabeto):
-        self.alfabeto = alfabeto
-        self.state_counter = 0
-        self.expectStates = []
+                    state.add_transition(node, symbol)
 
-    def startLR0(self):
+        print(self.states)
+        graph = createGraphLr(self.states, self.initial_state)
+        graph.createGraph()
+
+    def formateExpresiones(self, expresions):
+        start = True
+        for expresion in expresions:
+            self.alphabet.append(expresion)
+            if start:
+                valueToAdd = expresion + '`' + ' -> ' + expresion
+                self.expresions.append(valueToAdd)
+                start = False
+
+            getValueExp = expresions[expresion]
+            for i in getValueExp:
+                valueToAdd = expresion + ' -> ' + i
+                self.expresions.append(valueToAdd)
+                slitGetValueExp = i.split(' ')
+                for j in slitGetValueExp:
+                    if j not in self.alphabet:
+                        self.alphabet.append(j)
+        haveL = []
+        for i in self.alphabet:
+            if len(haveL) == 0:
+                haveL.append(i)
+            else:
+                if i not in haveL:
+                    haveL.append(i)
+        self.alphabet = haveL
+
+    def agregarPunto(self):
+        result = []
+        for expresion in self.expresions:
+            expresionSplit = expresion.split('->')
+            expresionSplit[1] = ' .' + expresionSplit[1]
+            expresion = expresionSplit[0] + '->' + expresionSplit[1]
+            result.append(expresion)
+        return result
+
+    # go to suena a gato, entonces el gatoGoto :)
+    def gatoGoto(self, state, symbol):
+        result = []
+        for item in state.productions:
+            itemSplit = item.split('->')
+            itemSplitPunto = [itemSplit[1].split('.')[1].split()][0]
+            if len(itemSplitPunto) > 0:
+                if itemSplitPunto[0] == symbol:
+
+                    valuesAntes, valueDespues = item.split('.')
+                    valueDespues = valueDespues.split()
+
+                    if len(valueDespues) == 1:
+                        tempVal = valuesAntes + ' ' + valueDespues[0] + ' .'
+                        item = tempVal
+                    else:
+                        valueDespuesAdd = ''
+                        for i in valueDespues[1:]:
+                            valueDespuesAdd = valueDespuesAdd + ' ' + i
+                        tempVal = valuesAntes + ' ' + \
+                            valueDespues[0] + ' .' + valueDespuesAdd
+                        item = tempVal
+                    result.append(item)
+
+        for item in result:
+            itemSplit = item.split('.')[1].split()
+            if len(itemSplit) > 0:
+                right = itemSplit[0]
+                if right not in self.tokens:
+                    if right != '->':
+                        clousure = self.clousure(item)
+                        for i in clousure:
+                            if i not in result:
+                                result.append(i)
+
+        if len(result) > 0:
+            for item in result:
+                temp1 = item.replace('.', '').strip()
+                temp2 = self.start_state.replace('.', '').strip()
+                if temp1 == temp2:
+                    right = self.start_state.split('.')[1].split()[0].strip()
+                    left = item.split('.')[0].split()[-1].strip()
+
+                    if right == left:
+                        node = NODE(self.stringIficador(
+                            result), 1, result)
+                        return node
+                else:
+                    node = NODE(self.stringIficador(
+                        result), 0, result)
+                    return node
+        else:
+            return None
+
+    def clousure(self, item):
+        result = []
+        result.append(item)
+
+        for i in result:
+            for j in self.expresions:
+                iSplit = i.split('->')[1].split('.')[1].split()[0].strip()
+                jSplit = j.split('->')[0].strip()
+                if iSplit == jSplit:
+                    tempVal = j.split('->')
+                    tempVal = tempVal[0] + '->' + tempVal[1]
+
+                    if tempVal not in result:
+                        result.append(tempVal)
+
+        return result
+
+    def stringIficador(self, productions):
+        result = ''
+        for i in productions:
+            result = result + i + ' \n '
+        return result
