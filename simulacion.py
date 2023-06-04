@@ -35,7 +35,6 @@ class simulacion:
                 work = symbol_string
             index += 1
         print(self.resultSimulacion)
-        print('xd')
 
     def simular(self, inputSim):
 

@@ -170,5 +170,10 @@ class yalReader:
                             if word == '}':
                                 returnTemp = False
                                 startRead = True
-                            elif word != 'return':
-                                self.goodTokens[tokenTemp] = word
+                            else:
+                                if self.goodTokens.get(tokenTemp) != None:
+                                    temp = self.goodTokens[tokenTemp]
+                                    self.goodTokens[tokenTemp] = temp + \
+                                        ' ' + word
+                                else:
+                                    self.goodTokens[tokenTemp] = word
