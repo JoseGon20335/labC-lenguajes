@@ -1,4 +1,5 @@
 from graph.createGraphLr import *
+from tabulate import tabulate
 
 
 class transition:
@@ -314,11 +315,21 @@ class LR0:
                                 else:
                                     raise Exception(
                                         'Conflict: ' + str(self.buscarEstadoPorNombre(i.name)) + ', ' + str(k) + ' = ' + valueTemp + ', R' + str(self.buscarEstadoSinPunto(j)))
-        for i in self.tableGoto:
-            print(i)
-        print('_________________________________________________________')
-        for i in self.tableActions:
-            print(i)
+        # print('go to')
+        # for i in self.tableGoto:
+        #     print(i)
+        # print('_________________________________________________________')
+        # print('action')
+        # for i in self.tableActions:
+        #     print(i)
+
+        print('Action Table:')
+        print(tabulate(self.tableActions, headers=range(
+            len(self.tableActions[0])), tablefmt='grid'))
+
+        print('\nGoto Table:')
+        print(tabulate(self.tableGoto, headers=range(
+            len(self.tableGoto[0])), tablefmt='grid'))
 
         print('_________________________________________________________')
 
@@ -338,7 +349,7 @@ class LR0:
 
         print('_________________________________________________________')
 
-        print('me quiero morir')
+        print('dale Zelda dale')
 
     def buscarEstadoPorNombre(self, nombre):
         for i in range(len(self.states)):
