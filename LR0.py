@@ -310,10 +310,10 @@ class LR0:
                                     i.name)][columnsTerminals.index(k)]
                                 if valueTemp == None:
                                     self.tableActions[self.buscarEstadoPorNombre(
-                                        i.name)][columnsTerminals.index(k)] = 'R' + ', ' + str(self.buscarEstadoSinPunto(j))
+                                        i.name)][columnsTerminals.index(k)] = 'R' + str(self.buscarEstadoSinPunto(j))
                                 else:
                                     raise Exception(
-                                        'Conflict: ', str(self.buscarEstadoPorNombre(i.name)) + ', ' + str(k) + ' = ' + valueTemp + 'R' + str(self.buscarEstadoSinPunto(j)))
+                                        'Conflict: ' + str(self.buscarEstadoPorNombre(i.name)) + ', ' + str(k) + ' = ' + valueTemp + ', R' + str(self.buscarEstadoSinPunto(j)))
         for i in self.tableGoto:
             print(i)
         print('_________________________________________________________')
