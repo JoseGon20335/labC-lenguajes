@@ -29,9 +29,11 @@ class LR0:
         self.start_state = None
         self.final_states = []
         self.initial_state = None
+        self.testUse = None
 
     def startLR0(self, expresions, tokens):
         self.tokens = tokens
+        self.testUse = expresions
         self.formateExpresiones(expresions=expresions)
         self.expresions = self.agregarPunto()
 
@@ -64,7 +66,8 @@ class LR0:
 
                     state.add_transition(node, symbol)
 
-        print(self.states)
+        self.funcionesTest()
+
         graph = createGraphLr(self.states, self.initial_state)
         graph.createGraph()
 
@@ -178,4 +181,58 @@ class LR0:
         result = ''
         for i in productions:
             result = result + i + ' \n '
+        return result
+
+    def funcionesTest(self):
+
+        for i in self.alphabet:
+            print('____________________________________')
+            print('First de: ', i)
+            print(self.grammaAnaliticsFist(i))
+            print('____________________________________')
+            print('Follow de: ', i)
+            print(self.grammaAnaliticsFollow(i))
+            print('____________________________________')
+
+    def grammaAnaliticsFist(self, symbol):
+        result = []
+        if symbol in self.tokens:
+            result.append(symbol)
+            return result
+        for i in self.testUse[symbol]:
+            values = i.split(' ')
+            if values[0] in self.tokens:
+                if values[0] not in result:
+                    result.append(values[0])
+            elif values[0] != symbol:
+                temp = self.grammaAnaliticsFist(values[0])
+                result.extend(temp)
+        result = list(set(result))
+        return result
+
+    def grammaAnaliticsFollow(self, symbol):
+        result = []
+        if symbol == list(self.testUse.keys())[0]:
+            result.append('$')
+        for i in self.testUse:
+            valueTemp = self.testUse[i]
+            for j in valueTemp:
+                if symbol in j:
+                    temp = j.split().index(symbol)
+
+                    if temp == len(j.split()) - 1:
+                        if i != symbol:
+                            temp2 = self.grammaAnaliticsFollow(i)
+                            result.extend(temp2)
+                    else:
+                        jSplit = j.split()
+                        valueTemp = self.grammaAnaliticsFist(
+                            jSplit[temp + 1])
+                        if 'ε' in valueTemp:
+                            if i != symbol:
+                                valueTemp2 = self.grammaAnaliticsFollow(i)
+                                result.extend(valueTemp2)
+                            valueTemp.remove('&')
+                        result.extend(valueTemp)
+        result = list(set(result))
         return result
