@@ -217,33 +217,38 @@ class LR0:
         result = list(set(result))
         return result
 
-    def grammaAnaliticsFollow(self, symbolIn):
+    def grammaAnaliticsFollow(self, symbolIn, iteration=0):
         result = []
         symbol = symbolIn.strip()
-        if symbol == list(self.testUse.keys())[0]:
-            result.append('DOLLAR')
-        for i in self.testUse:
-            valueTemp = self.testUse[i]
-            for j in valueTemp:
-                if symbol in j:
-                    temp = j.split().index(symbol)
+        if iteration < 100:
+            if symbol == list(self.testUse.keys())[0]:
+                result.append('DOLLAR')
+            for i in self.testUse:
+                valueTemp = self.testUse[i]
+                for j in valueTemp:
+                    if symbol in j:
+                        temp = j.split().index(symbol)
 
-                    if temp == len(j.split()) - 1:
-                        if i != symbol:
-                            temp2 = self.grammaAnaliticsFollow(i)
-                            result.extend(temp2)
-                    else:
-                        jSplit = j.split()
-                        valueTemp = self.grammaAnaliticsFist(
-                            jSplit[temp + 1])
-                        if 'ε' in valueTemp:
+                        if temp == len(j.split()) - 1:
                             if i != symbol:
-                                valueTemp2 = self.grammaAnaliticsFollow(i)
-                                result.extend(valueTemp2)
-                            valueTemp.remove('&')
-                        result.extend(valueTemp)
-        result = list(set(result))
-        return result
+                                temp2 = self.grammaAnaliticsFollow(
+                                    i, iteration=iteration + 1)
+                                result.extend(temp2)
+                        else:
+                            jSplit = j.split()
+                            valueTemp = self.grammaAnaliticsFist(
+                                jSplit[temp + 1])
+                            if 'ε' in valueTemp:
+                                if i != symbol:
+                                    valueTemp2 = self.grammaAnaliticsFollow(
+                                        i, iteration=iteration + 1)
+                                    result.extend(valueTemp2)
+                                valueTemp.remove('&')
+                            result.extend(valueTemp)
+            result = list(set(result))
+            return result
+        else:
+            return []
 
     def makeTable(self):
         columnsTerminals = []
@@ -273,28 +278,42 @@ class LR0:
         for i in self.states:
             for j in i.transition_to:
                 if j.symbol in columnsTerminals:
-                    self.tableActions[self.buscarEstadoPorNombre(
-                        i.name)][columnsTerminals.index(j.symbol)] = "S" + str(self.buscarEstadoPorNombre(j.state.name))
+                    valueTemp = self.tableActions[self.buscarEstadoPorNombre(
+                        i.name)][columnsTerminals.index(j.symbol)]
+                    if valueTemp == None:
+                        self.tableActions[self.buscarEstadoPorNombre(
+                            i.name)][columnsTerminals.index(j.symbol)] = "S" + str(self.buscarEstadoPorNombre(j.state.name))
+                    else:
+                        raise Exception('Error: No es SLR')
 
         for i in self.states:
             for j in i.productions:
                 if j.split('->')[1].split('.')[1].split() == []:
                     if j.split('->')[0] == self.start_state.split('->')[0]:
-                        self.tableActions[self.buscarEstadoPorNombre(
-                            i.name)][columnsTerminals.index('DOLLAR')] = 'ACEPTENCE'
-
+                        valueTemp = self.tableActions[self.buscarEstadoPorNombre(
+                            i.name)][columnsTerminals.index('DOLLAR')]
+                        if valueTemp == None:
+                            self.tableActions[self.buscarEstadoPorNombre(
+                                i.name)][columnsTerminals.index('DOLLAR')] = 'ACEPTENCE'
+                        else:
+                            raise Exception(
+                                'Conflict ', self.buscarEstadoPorNombre(i.name), ', ', k, ' = ', valueTemp)
         for i in self.states:
             for j in i.productions:
                 if j.split('->')[1].split('.')[1].split() == []:
                     if j.split('->')[0] != self.start_state.split('->')[0]:
-                        print()
                         followValues = self.grammaAnaliticsFollow(
                             j.split('->')[0])
                         for k in followValues:
                             if k in columnsTerminals:
-                                self.tableActions[self.buscarEstadoPorNombre(
-                                    i.name)][columnsTerminals.index(k)] = 'R' + str(self.buscarEstadoSinPunto(j))
-
+                                valueTemp = self.tableActions[self.buscarEstadoPorNombre(
+                                    i.name)][columnsTerminals.index(k)]
+                                if valueTemp == None:
+                                    self.tableActions[self.buscarEstadoPorNombre(
+                                        i.name)][columnsTerminals.index(k)] = 'R' + ', ' + str(self.buscarEstadoSinPunto(j))
+                                else:
+                                    raise Exception(
+                                        'Conflict: ', str(self.buscarEstadoPorNombre(i.name)) + ', ' + str(k) + ' = ' + valueTemp + 'R' + str(self.buscarEstadoSinPunto(j)))
         for i in self.tableGoto:
             print(i)
         print('_________________________________________________________')
@@ -307,9 +326,10 @@ class LR0:
         for j in self.simulacion.resultSimulacion:
             value = self.returnReturnable(j[1])
             if value != None:
-                resultTemp.append(value.replace(
-                    ' ', '').replace('return', ''))
-                continue
+                if value.replace(' ', '').replace('return', '') not in self.ignores:
+                    resultTemp.append(value.replace(
+                        ' ', '').replace('return', ''))
+                    continue
 
         print(resultTemp)
         print('_________________________________________________________')
