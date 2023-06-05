@@ -22,7 +22,7 @@ precedence = {'(': 1, '(': 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 def mainC():
 
-    yalFile = 'yal/slr-1.yal'
+    yalFile = 'yal/slr-2.yal'
 
     yalRead = yalReader(yalFile)
     yalexInput = yalRead.startReader()
