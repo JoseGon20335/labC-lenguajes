@@ -7,7 +7,6 @@ class yapalReader:
 
     def startReader(self):
         self.readTokens()
-        print('terminar')
         return self
 
     def readTokens(self):
