@@ -14,17 +14,6 @@ precedence = {'(': 1, "(": 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 
 def main():
-    pasar = True
-    expresion = ''
-    while pasar:
-        print('Ingrese la expresion regular:')
-        expresion = input()
-        if expresion == '':
-            print('Expresion regular vacia.')
-        elif expresion == ' ':
-            print('Expresion regular vacia.')
-        else:
-            pasar = False
 
     # expresion = '(a*|b*)c'
     # expresion = '0?(1?)?0*'
@@ -35,8 +24,6 @@ def main():
     # expresion = '(a|b)*a(a|b)(a|b)'
     # expresionInput = input('Ingrese el redex a evaluar. Por ejemplo: a|b')
     # expresion = evaluateInput().evaluate(expresionInput)
-    # expresion = 'a(a?b*|c+)b|baa'
-    # expresion = '(a?)'
 
     # PRIMERO SE PASA A POSTFIX
     print('___________________________')

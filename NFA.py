@@ -265,7 +265,6 @@ class NFA:
             symbolTemp = ['ε']
             temp.get_new_states(left.states)
             temp.get_new_symbol(symbolTemp)
-            temp.alphabet = self.get_new_symbol
             return temp
 
     def print_result(self):
