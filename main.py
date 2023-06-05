@@ -24,8 +24,8 @@ precedence = {'(': 1, '(': 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 def main():
 
-    yalFile = 'prueba/slr-3.yal'
-    yapalFile = 'prueba/slr-3.yalp'
+    yalFile = 'prueba/slr-1.yal'
+    yapalFile = 'prueba/slr-1.yalp'
 
     print('READER YAL___________________________')
     yalRead = yalReader(yalFile)
@@ -39,7 +39,7 @@ def main():
     dfa.convert(post)
     print('END TREE DFA_________________________')
     print('SIMULACION___________________________')
-    sim = simulacion(dfa, 'prueba/prueba1F.txt')
+    sim = simulacion(dfa, 'prueba/prueba1N.txt')
     sim.iniciarSimulacion()
     print('END SIMULACION_______________________')
     print('READ YAPAL___________________________')
@@ -47,7 +47,8 @@ def main():
     yapalInput = yapalRead.startReader()
     print('END READ YAPAL_______________________')
     print('MAKE SLR_____________________________')
-    lr0 = LR0(ignores=yapalInput.ignores)
+    lr0 = LR0(ignores=yapalInput.ignores, simulacion=sim,
+              diccionario=yalRead.goodTokens)
     lr0.startLR0(yapalInput.expresions, yapalInput.tokens)
     print('END MAKE SLR_________________________')
 

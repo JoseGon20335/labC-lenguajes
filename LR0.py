@@ -20,7 +20,7 @@ class NODE:
 
 
 class LR0:
-    def __init__(self, ignores):
+    def __init__(self, ignores, simulacion, diccionario):
         self.alphabet = []
         self.state_counter = 0
         self.expresions = []
@@ -33,6 +33,8 @@ class LR0:
         self.tableGoto = [[]]
         self.tableActions = [[]]
         self.ignores = ignores
+        self.simulacion = simulacion
+        self.diccionario = diccionario
 
     def startLR0(self, expresions, tokens):
         self.tokens = tokens
@@ -299,6 +301,23 @@ class LR0:
         for i in self.tableActions:
             print(i)
 
+        print('_________________________________________________________')
+
+        resultTemp = []
+        for j in self.simulacion.resultSimulacion:
+            value = self.returnReturnable(j[1])
+            if value != None:
+                resultTemp.append(value.replace(
+                    ' ', '').replace('return', ''))
+                continue
+
+        print(resultTemp)
+        print('_________________________________________________________')
+
+        self.parse(resultTemp, columnsTerminals, columnsNoTerminals)
+
+        print('_________________________________________________________')
+
         print('me quiero morir')
 
     def buscarEstadoPorNombre(self, nombre):
@@ -314,3 +333,70 @@ class LR0:
             state = self.initial_state.productions[i]
             if state.replace('.', '').strip().replace(' ', '') == nombre:
                 return i
+
+    def parse(self, input_string, listTerminals, listNoTerminals):
+        # Initialize the stack with the initial state
+        stack = [self.initial_state]
+        input_tokens = input_string
+        input_tokens.append('DOLLAR')  # Add end-of-input marker
+        listTerminals.append('$')
+        output = []
+
+        while True:
+            current_token = input_tokens[0]
+            state = stack[-1]  # Get the top of the stack without popping it
+            action = self.tableActions[self.buscarEstadoPorNombre(
+                state.name)][listTerminals.index(current_token)]
+
+            if action is None:
+                print("Error: Invalid input at position", len(output))
+                return False
+
+            if action.startswith("S"):
+                next_state = int(action[1:])
+                stack.append(self.states[next_state])
+                output.append(current_token)
+                input_tokens.pop(0)
+            elif action.startswith("R"):
+                next_state = int(action[1:])
+                production = self.initial_state.productions[next_state]
+                left, right = production.split("->")
+                left = left.strip()
+                rightTemp = right.strip().replace('.', '').split()
+
+                for i in rightTemp:
+                    if i == '':
+                        rightTemp.remove(i)
+                for _ in range(len(rightTemp)):
+                    stack.pop()
+
+                # Get the top of the stack without popping it
+                top_state = stack[-1]
+                next_state = self.tableGoto[self.buscarEstadoPorNombre(
+                    top_state.name)][listNoTerminals.index(left)]
+
+                stack.append(self.states[next_state])
+
+            elif action == "ACEPTENCE":
+                print("Input accepted.")
+                return True
+            else:
+                print("Error: Invalid input at position", len(output))
+                return False
+
+        return output
+
+    def returnReturnable(self, string):
+        string = string.replace('#', '')
+        key = ''
+        for i in self.diccionario:
+            check = self.is_convertible_to_int(i)
+            if check:
+                key = chr(int(i))
+            else:
+                key = i
+            if key == string:
+                return self.diccionario[i]
+
+    def is_convertible_to_int(self, string):
+        return string.isdigit()
