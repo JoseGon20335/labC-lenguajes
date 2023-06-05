@@ -24,32 +24,25 @@ precedence = {'(': 1, '(': 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 def main():
 
-    yalFile = 'prueba/slr-1.yal'
-    yapalFile = 'prueba/slr-1.yalp'
+    yalFile = 'yal/slr-1.yal'
+    yapalFile = 'yapar/slr-1.yalp'
 
-    print('READER YAL___________________________')
-    yalRead = yalReader(yalFile)
-    yalexInput = yalRead.startReader()
-    print('END READ YAL_________________________')
-    print('POSTFIX______________________________')
-    post = postfix.passToPostFix(yalexInput)
-    print('END POSTFIX__________________________')
-    print('TREE DFA_____________________________')
-    dfa = DFADirect()
-    dfa.convert(post)
-    print('END TREE DFA_________________________')
-    print('SIMULACION___________________________')
-    sim = simulacion(dfa, 'prueba/prueba1F.txt')
-    sim.iniciarSimulacion()
-    print('END SIMULACION_______________________')
-    print('READ YAPAL___________________________')
+    print('___________________________')
     yapalRead = yapalReader(yapalFile)
     yapalInput = yapalRead.startReader()
-    print('END READ YAPAL_______________________')
-    print('MAKE SLR_____________________________')
+    print('___________________________')
+
+    print('___________________________')
+    yalRead = yalReader(yalFile)
+    yalexInput = yalRead.startReader()
+    print('___________________________')
+
+    print('___________________________')
+    print(yapalInput.tokens)
+    print(yapalInput.expresions)
     lr0 = LR0()
     lr0.startLR0(yapalInput.expresions, yapalInput.tokens)
-    print('END MAKE SLR_________________________')
+    print('___________________________')
 
 
 main()

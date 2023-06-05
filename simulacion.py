@@ -1,9 +1,8 @@
 class simulacion:
-    def __init__(self, automata, nameFile):
+    def __init__(self, automata):
         self.automata = automata
         self.input = ''
         self.resultSimulacion = []
-        self.nameFile = nameFile
 
     def iniciarSimulacion(self):
         self.input = self.readTxt()
@@ -102,7 +101,7 @@ class simulacion:
         return True
 
     def readTxt(self):
-        file_path = self.nameFile
+        file_path = 'prueba/prueba.txt'
         with open(file_path, 'r') as file:
             file_contents = file.read()
 
