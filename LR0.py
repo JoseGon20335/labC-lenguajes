@@ -20,7 +20,7 @@ class NODE:
 
 
 class LR0:
-    def __init__(self):
+    def __init__(self, ignores):
         self.alphabet = []
         self.state_counter = 0
         self.expresions = []
@@ -30,7 +30,9 @@ class LR0:
         self.final_states = []
         self.initial_state = None
         self.testUse = None
-        self.table = [[]]
+        self.tableGoto = [[]]
+        self.tableActions = [[]]
+        self.ignores = ignores
 
     def startLR0(self, expresions, tokens):
         self.tokens = tokens
@@ -213,10 +215,11 @@ class LR0:
         result = list(set(result))
         return result
 
-    def grammaAnaliticsFollow(self, symbol):
+    def grammaAnaliticsFollow(self, symbolIn):
         result = []
+        symbol = symbolIn.strip()
         if symbol == list(self.testUse.keys())[0]:
-            result.append('$')
+            result.append('DOLLAR')
         for i in self.testUse:
             valueTemp = self.testUse[i]
             for j in valueTemp:
@@ -241,11 +244,73 @@ class LR0:
         return result
 
     def makeTable(self):
-        columns = []
+        columnsTerminals = []
+        columnsNoTerminals = []
         for i in self.tokens:
-            columns.append(i)
-        columns.append('$')
+            if i not in self.ignores:
+                columnsTerminals.append(i)
+        columnsTerminals.append('DOLLAR')
         for i in self.alphabet:
-            if i not in columns:
-                columns.append(i)
-        print(columns)
+            if i not in self.tokens:
+                columnsNoTerminals.append(i)
+        print(columnsTerminals)
+        print(columnsNoTerminals)
+
+        self.tableGoto = [[None] * len(columnsNoTerminals)
+                          for _ in range(len(self.states))]
+
+        for i in self.states:
+            for j in i.transition_to:
+                if j.symbol in columnsNoTerminals:
+                    self.tableGoto[self.buscarEstadoPorNombre(
+                        i.name)][columnsNoTerminals.index(j.symbol)] = self.buscarEstadoPorNombre(j.state.name)
+
+        self.tableActions = [[None] * len(columnsTerminals)
+                             for _ in range(len(self.states))]
+
+        for i in self.states:
+            for j in i.transition_to:
+                if j.symbol in columnsTerminals:
+                    self.tableActions[self.buscarEstadoPorNombre(
+                        i.name)][columnsTerminals.index(j.symbol)] = "S" + str(self.buscarEstadoPorNombre(j.state.name))
+
+        for i in self.states:
+            for j in i.productions:
+                if j.split('->')[1].split('.')[1].split() == []:
+                    if j.split('->')[0] == self.start_state.split('->')[0]:
+                        self.tableActions[self.buscarEstadoPorNombre(
+                            i.name)][columnsTerminals.index('DOLLAR')] = 'ACEPTENCE'
+
+        for i in self.states:
+            for j in i.productions:
+                if j.split('->')[1].split('.')[1].split() == []:
+                    if j.split('->')[0] != self.start_state.split('->')[0]:
+                        print()
+                        followValues = self.grammaAnaliticsFollow(
+                            j.split('->')[0])
+                        for k in followValues:
+                            if k in columnsTerminals:
+                                self.tableActions[self.buscarEstadoPorNombre(
+                                    i.name)][columnsTerminals.index(k)] = 'R' + str(self.buscarEstadoSinPunto(j))
+
+        for i in self.tableGoto:
+            print(i)
+        print('_________________________________________________________')
+        for i in self.tableActions:
+            print(i)
+
+        print('me quiero morir')
+
+    def buscarEstadoPorNombre(self, nombre):
+        for i in range(len(self.states)):
+            state = self.states[i]
+            if state.name == nombre:
+                return i
+        return None
+
+    def buscarEstadoSinPunto(self, nombre2):
+        nombre = nombre2.replace('.', '').strip().replace(' ', '')
+        for i in range(len(self.initial_state.productions)):
+            state = self.initial_state.productions[i]
+            if state.replace('.', '').strip().replace(' ', '') == nombre:
+                return i
