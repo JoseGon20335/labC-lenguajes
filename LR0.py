@@ -30,6 +30,7 @@ class LR0:
         self.final_states = []
         self.initial_state = None
         self.testUse = None
+        self.table = [[]]
 
     def startLR0(self, expresions, tokens):
         self.tokens = tokens
@@ -70,6 +71,8 @@ class LR0:
 
         graph = createGraphLr(self.states, self.initial_state)
         graph.createGraph()
+
+        self.makeTable()
 
     def formateExpresiones(self, expresions):
         start = True
@@ -236,3 +239,13 @@ class LR0:
                         result.extend(valueTemp)
         result = list(set(result))
         return result
+
+    def makeTable(self):
+        columns = []
+        for i in self.tokens:
+            columns.append(i)
+        columns.append('$')
+        for i in self.alphabet:
+            if i not in columns:
+                columns.append(i)
+        print(columns)
