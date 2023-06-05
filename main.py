@@ -30,17 +30,11 @@ def mainC():
     print('postfix: ', postFix)
     print('___________________________')
 
-    # print('___________________________')
-    # # VAMOS A PASAR EL POSTFIX A UN ARBOL
-    # tree = Tree(postFix=postFix, nameOfTree='tree')
-    # tree.postFixToTree()
-    # print('___________________________')
-
-    # print('___________________________')
-    # # VAMOS A PASAR EL NFA A UN AFD
-    # dfa = DFADirect()
-    # dfa.convert(postfix=postFix)
-    # print('___________________________')
+    print('___________________________')
+    # VAMOS A PASAR EL POSTFIX A UN ARBOL
+    tree = Tree(postFix=postFix, nameOfTree='tree')
+    tree.postFixToTree()
+    print('___________________________')
 
 
 mainC()
