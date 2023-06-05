@@ -315,13 +315,6 @@ class LR0:
                                 else:
                                     raise Exception(
                                         'Conflict: ' + str(self.buscarEstadoPorNombre(i.name)) + ', ' + str(k) + ' = ' + valueTemp + ', R' + str(self.buscarEstadoSinPunto(j)))
-        # print('go to')
-        # for i in self.tableGoto:
-        #     print(i)
-        # print('_________________________________________________________')
-        # print('action')
-        # for i in self.tableActions:
-        #     print(i)
 
         print('Action Table:')
         print(tabulate(self.tableActions, headers=range(
