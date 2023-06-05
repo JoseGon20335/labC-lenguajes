@@ -7,15 +7,27 @@ def passToPostFix(redexPre):
     redex = []
 
     littleString = ''
+    checker = False
     for i, c in enumerate(redexPre):
-        if c == '(' or c == ')' or c == '|' or c == '*' or c == '+' or c == '?' or c == '.' or c == ' ':
+        if c == '"':
+            if checker:
+                checker = False
+                redex.append(littleString)
+                littleString = ''
+            else:
+                checker = True
+                continue
+        if checker:
+            littleString += c
+        elif c == '(' or c == ')' or c == '|' or c == '*' or c == '+' or c == '?' or c == '.':
             if littleString != '':
                 redex.append(littleString)
             redex.append(c)
             littleString = ''
         else:
             littleString += c
-    redex.append(littleString)
+    if littleString != '' or littleString != ' ' or littleString != '"':
+        redex.append(littleString)
 
     for i, c in enumerate(redex):
         if i+1 != len(redex) and c in alfabetoA and redex[i+1] in alfabetoA:
@@ -48,11 +60,12 @@ def passToPostFix(redexPre):
         elif i+1 != len(redex) and c == '+' and redex[i+1] == '(':
             fixRedex.append(c)
             fixRedex.append('.')
-        else:
-            fixRedex.append(c)
+        elif c != '"':
+            if c != '':
+                fixRedex.append(c)
 
     for i, c in enumerate(fixRedex):
-        if c in alfabetoA:
+        if c in alfabetoA or c[:1] == '#':
             resultPostFix.append(c)
         elif c == '(':
             stack.append(c)
