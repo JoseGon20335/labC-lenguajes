@@ -19,7 +19,7 @@ precedence = {'(': 1, '(': 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 def mainC():
 
-    yalFile = 'yal/slr-3.yal'
+    yalFile = 'yal/slr-1.yal'
 
     yalRead = yalReader(yalFile)
     yalexInput = yalRead.startReader()
@@ -29,7 +29,11 @@ def mainC():
     postFix = postfix.passToPostFix(yalexInput)
     print('postfix: ', postFix)
     print('___________________________')
-
+    print(yalexInput.tokens)
+    print('___________________________')
+    print(yalexInput.goodTokens)
+    print('___________________________')
+    print(yalexInput.ruleTokens)
     print('___________________________')
     # VAMOS A PASAR EL POSTFIX A UN ARBOL
     tree = Tree(postFix=postFix, nameOfTree='tree')
