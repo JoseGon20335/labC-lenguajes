@@ -24,8 +24,8 @@ precedence = {'(': 1, '(': 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 def main():
 
-    yalFile = 'yal/slr-3.yal'
-    yapalFile = 'yapar/slr-3.yalp'
+    yalFile = 'yal/slr-1.yal'
+    yapalFile = 'yapar/slr-1.yalp'
 
     print('___________________________')
     yapalRead = yapalReader(yapalFile)
