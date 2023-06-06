@@ -15,7 +15,7 @@ precedence = {'(': 1, "(": 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 def main():
 
-    # expresion = '(a*|b*)c'
+    expresion = '(a*|b*)c'
     # expresion = '0?(1?)?0*'
     # expresion = 'a(a?b*|c+)b|baa'
     # expresion = '(a*|b*)c'
