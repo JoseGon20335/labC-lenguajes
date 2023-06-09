@@ -24,10 +24,10 @@ precedence = {'(': 1, '(': 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 def main():
 
-    yalFile = 'prueba/lab-f.yal'
-    yapalFile = 'prueba/lab-f.yalp'
     # yalFile = 'prueba/lab-f.yal'
     # yapalFile = 'prueba/lab-f.yalp'
+    yalFile = 'prueba/slr-1.yal'
+    yapalFile = 'prueba/slr-1.yalp'
 
     print('READER YAL___________________________')
     yalRead = yalReader(yalFile)
