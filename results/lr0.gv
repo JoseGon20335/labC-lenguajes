@@ -1,278 +1,163 @@
 // resultado
 digraph "results/lr0" {
 	graph [rankdir=LR]
-	"expression` -> . expression 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " [label="expression` -> . expression 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
+	"s` -> . s 
+ s -> . l EQUALS r 
+ s -> . r 
+ l -> . TIMES r 
+ l -> . ID 
+ r -> . l 
+ " [label="s` -> . s 
+ s -> . l EQUALS r 
+ s -> . r 
+ l -> . TIMES r 
+ l -> . ID 
+ r -> . l 
  " color=green shape=square]
-	"expression` ->  expression . 
- expression ->  expression . PLUS term 
- " [label="expression` ->  expression . 
- expression ->  expression . PLUS term 
+	"s` ->  s . 
+ " [label="s` ->  s . 
  " color=red shape=square]
-	"expression ->  term . 
- term ->  term . TIMES factor 
- " [label="expression ->  term . 
- term ->  term . TIMES factor 
+	"s ->  l . EQUALS r 
+ r ->  l . 
+ " [label="s ->  l . EQUALS r 
+ r ->  l . 
  " shape=square]
-	"term ->  factor . 
- " [label="term ->  factor . 
+	"s ->  r . 
+ " [label="s ->  r . 
  " shape=square]
-	"factor ->  LPAREN . expression RPAREN 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " [label="factor ->  LPAREN . expression RPAREN 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
+	"l ->  TIMES . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " [label="l ->  TIMES . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
  " shape=square]
-	"factor ->  ID . 
- " [label="factor ->  ID . 
+	"l ->  ID . 
+ " [label="l ->  ID . 
  " shape=square]
-	"expression ->  expression  PLUS . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " [label="expression ->  expression  PLUS . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
+	"s ->  l  EQUALS . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " [label="s ->  l  EQUALS . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
  " shape=square]
-	"term ->  term  TIMES . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " [label="term ->  term  TIMES . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
+	"r ->  l . 
+ " [label="r ->  l . 
  " shape=square]
-	"factor ->  LPAREN  expression . RPAREN 
- expression ->  expression . PLUS term 
- " [label="factor ->  LPAREN  expression . RPAREN 
- expression ->  expression . PLUS term 
+	"l ->  TIMES  r . 
+ " [label="l ->  TIMES  r . 
  " shape=square]
-	"expression ->  expression  PLUS  term . 
- term ->  term . TIMES factor 
- " [label="expression ->  expression  PLUS  term . 
- term ->  term . TIMES factor 
+	"s ->  l  EQUALS  r . 
+ " [label="s ->  l  EQUALS  r . 
  " shape=square]
-	"term ->  term  TIMES  factor . 
- " [label="term ->  term  TIMES  factor . 
- " shape=square]
-	"factor ->  LPAREN  expression  RPAREN . 
- " [label="factor ->  LPAREN  expression  RPAREN . 
- " shape=square]
-	"expression` -> . expression 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "expression` ->  expression . 
- expression ->  expression . PLUS term 
- " [label=expression]
-	"expression` -> . expression 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "expression ->  term . 
- term ->  term . TIMES factor 
- " [label=term]
-	"expression` -> . expression 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "term ->  factor . 
- " [label=factor]
-	"expression` -> . expression 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "factor ->  LPAREN . expression RPAREN 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " [label=LPAREN]
-	"expression` -> . expression 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "factor ->  ID . 
- " [label=ID]
-	"expression` ->  expression . 
- expression ->  expression . PLUS term 
- " -> "expression ->  expression  PLUS . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " [label=PLUS]
-	"expression ->  term . 
- term ->  term . TIMES factor 
- " -> "term ->  term  TIMES . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
+	"s` -> . s 
+ s -> . l EQUALS r 
+ s -> . r 
+ l -> . TIMES r 
+ l -> . ID 
+ r -> . l 
+ " -> "s` ->  s . 
+ " [label=s]
+	"s` -> . s 
+ s -> . l EQUALS r 
+ s -> . r 
+ l -> . TIMES r 
+ l -> . ID 
+ r -> . l 
+ " -> "s ->  l . EQUALS r 
+ r ->  l . 
+ " [label=l]
+	"s` -> . s 
+ s -> . l EQUALS r 
+ s -> . r 
+ l -> . TIMES r 
+ l -> . ID 
+ r -> . l 
+ " -> "s ->  r . 
+ " [label=r]
+	"s` -> . s 
+ s -> . l EQUALS r 
+ s -> . r 
+ l -> . TIMES r 
+ l -> . ID 
+ r -> . l 
+ " -> "l ->  TIMES . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
  " [label=TIMES]
-	"factor ->  LPAREN . expression RPAREN 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "factor ->  LPAREN  expression . RPAREN 
- expression ->  expression . PLUS term 
- " [label=expression]
-	"factor ->  LPAREN . expression RPAREN 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "expression ->  term . 
- term ->  term . TIMES factor 
- " [label=term]
-	"factor ->  LPAREN . expression RPAREN 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "term ->  factor . 
- " [label=factor]
-	"factor ->  LPAREN . expression RPAREN 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "factor ->  LPAREN . expression RPAREN 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " [label=LPAREN]
-	"factor ->  LPAREN . expression RPAREN 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "factor ->  ID . 
+	"s` -> . s 
+ s -> . l EQUALS r 
+ s -> . r 
+ l -> . TIMES r 
+ l -> . ID 
+ r -> . l 
+ " -> "l ->  ID . 
  " [label=ID]
-	"expression ->  expression  PLUS . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "expression ->  expression  PLUS  term . 
- term ->  term . TIMES factor 
- " [label=term]
-	"expression ->  expression  PLUS . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "term ->  factor . 
- " [label=factor]
-	"expression ->  expression  PLUS . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "factor ->  LPAREN . expression RPAREN 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " [label=LPAREN]
-	"expression ->  expression  PLUS . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "factor ->  ID . 
- " [label=ID]
-	"term ->  term  TIMES . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "term ->  term  TIMES  factor . 
- " [label=factor]
-	"term ->  term  TIMES . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "factor ->  LPAREN . expression RPAREN 
- expression -> . expression PLUS term 
- expression -> . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " [label=LPAREN]
-	"term ->  term  TIMES . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " -> "factor ->  ID . 
- " [label=ID]
-	"factor ->  LPAREN  expression . RPAREN 
- expression ->  expression . PLUS term 
- " -> "expression ->  expression  PLUS . term 
- term -> . term TIMES factor 
- term -> . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
- " [label=PLUS]
-	"factor ->  LPAREN  expression . RPAREN 
- expression ->  expression . PLUS term 
- " -> "factor ->  LPAREN  expression  RPAREN . 
- " [label=RPAREN]
-	"expression ->  expression  PLUS  term . 
- term ->  term . TIMES factor 
- " -> "term ->  term  TIMES . factor 
- factor -> . LPAREN expression RPAREN 
- factor -> . ID 
+	"s ->  l . EQUALS r 
+ r ->  l . 
+ " -> "s ->  l  EQUALS . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " [label=EQUALS]
+	"l ->  TIMES . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " -> "r ->  l . 
+ " [label=l]
+	"l ->  TIMES . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " -> "l ->  TIMES  r . 
+ " [label=r]
+	"l ->  TIMES . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " -> "l ->  TIMES . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
  " [label=TIMES]
+	"l ->  TIMES . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " -> "l ->  ID . 
+ " [label=ID]
+	"s ->  l  EQUALS . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " -> "r ->  l . 
+ " [label=l]
+	"s ->  l  EQUALS . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " -> "s ->  l  EQUALS  r . 
+ " [label=r]
+	"s ->  l  EQUALS . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " -> "l ->  TIMES . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " [label=TIMES]
+	"s ->  l  EQUALS . r 
+ r -> . l 
+ l -> . TIMES r 
+ l -> . ID 
+ " -> "l ->  ID . 
+ " [label=ID]
 }

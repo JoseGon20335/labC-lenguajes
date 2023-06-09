@@ -24,8 +24,8 @@ precedence = {'(': 1, '(': 1, '|': 2, '.': 3, '*': 4, '+': 4, '?': 4}
 
 def main():
 
-    yalFile = 'prueba/slr-1.yal'
-    yapalFile = 'prueba/slr-1.yalp'
+    yalFile = 'prueba/lab-f.yal'
+    yapalFile = 'prueba/lab-f.yalp'
     # yalFile = 'prueba/lab-f.yal'
     # yapalFile = 'prueba/lab-f.yalp'
 
@@ -41,7 +41,7 @@ def main():
     dfa.convert(post)
     print('END TREE DFA_________________________')
     print('SIMULACION___________________________')
-    sim = simulacion(dfa, 'prueba/prueba1N.txt')
+    sim = simulacion(dfa, 'prueba/prueba3F.txt')
     sim.iniciarSimulacion()
     print('END SIMULACION_______________________')
     print('READ YAPAL___________________________')
